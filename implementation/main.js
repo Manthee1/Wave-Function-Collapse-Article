@@ -146,17 +146,68 @@ function drawImg(img, x, y, width, height, angle, s) {
 }
 
 
+function getOppositeDirection(direction) {
+    return (direction + 2) % 4;
+}
 
+function isRuleFollowed(stateA, stateB, direction) {
+    const tileA = tilesConfig[stateA];
+    const tileB = tilesConfig[stateB];
+    console.log(tileA, tileB, direction, tileA.connections[direction] === tileB.connections[getOppositeDirection(direction)]);
+    return tileA.connections[direction] === tileB.connections[getOppositeDirection(direction)];
+}
 
+window.updateCell = function (x, y) {
+    //Check if cell is collapsed
+    if (!isValidCell(x, y)) return;
+    if (grid[y][x].collapsed) return;
 
+    //Get all neighbours
+    const neighbours = [
+        [x, y - 1, directions.up],
+        [x + 1, y, directions.right],
+        [x, y + 1, directions.down],
+        [x - 1, y, directions.left]
+    ]
 
+    //Remove all states that are not possible
+    for (let neighbour of neighbours) {
+        let [nx, ny, direction] = neighbour;
+        if (!isValidCell(nx, ny)) continue;
+        let neighbourCell = grid[ny][nx];
+        if (neighbourCell.collapsed)
+            grid[y][x].states = grid[y][x].states.filter(state => isRuleFollowed(state, neighbourCell.state, direction));
+        // else
+        // grid[y][x].states = grid[y][x].states.filter(state => neighbourCell.states.some(neighbourState => isRuleFollowed(state, neighbourState, direction)));
+    }
+    if (grid[y][x].states.length == 1) collapseCell(grid[y][x]);
+    return grid[y][x]
+}
 
+window.updateAll = function () {
+    for (let y = 0; y < mapSize; y++) {
+        for (let x = 0; x < mapSize; x++) {
+            updateCell(x, y);
+        }
+    }
+}
 
+function isValidCell(x, y) {
+    const isValid = x >= 0 && x < mapSize && y >= 0 && y < mapSize
+    if (!isValid) console.info("Invalid cell", y, x);
+    return isValid
+}
 
-function collapseCell(cell) {
-    console.log("collapse");
-    cell.collapsed = true;
-    cell.states = [cell.state = cell.states.random()];
+window.collapseCell = function (cell) {
+    if (!cell) return;
+    try {
+        cell.collapsed = true;
+        cell.states = [cell.state = cell.states.random()];
+    } catch (error) {
+        console.log(cell);
+        console.error(error);
+    }
+
 }
 
 function isAllCollapsed() {
