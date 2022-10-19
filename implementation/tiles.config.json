@@ -1,0 +1,47 @@
+[
+    {
+        "img": "./tiles/cross.png",
+        "connections": [
+            1,
+            1,
+            1,
+            1
+        ]
+    },
+    {
+        "img": "./tiles/empty.png",
+        "connections": [
+            0,
+            0,
+            0,
+            0
+        ]
+    },
+    {
+        "img": "./tiles/path.png",
+        "connections": [
+            0,
+            1,
+            0,
+            1
+        ]
+    },
+    {
+        "img": "./tiles/end.png",
+        "connections": [
+            0,
+            0,
+            1,
+            0
+        ]
+    },
+    {
+        "img": "./tiles/three.png",
+        "connections": [
+            1,
+            1,
+            0,
+            1
+        ]
+    }
+]
