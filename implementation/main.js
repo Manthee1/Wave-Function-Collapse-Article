@@ -13,10 +13,13 @@ const directions = {
     left: 3
 }
 const preloadedImages = {};
-const canvasSize = 2000;
-const mapSize = 40;
+const canvasSize = 800;
+const mapSize = 20;
 const cellSize = canvasSize / mapSize;
 const [width, height] = [canvasSize, canvasSize]
+
+let lastCollapsedCell = [0, 0];
+let collapsedCells = 0;
 
 const defaultCell = {
     collapsed: false,
@@ -64,7 +67,6 @@ const p5Instance = (s) => {
     }
     s.setup = function () {
         s.createCanvas(canvasSize, canvasSize);
-        s.noLoop();
     }
 
     s.draw = function () {
@@ -72,10 +74,18 @@ const p5Instance = (s) => {
         s.noStroke();
         s.background(255);
 
-        if (!isAllCollapsed())
+        if (!isAllCollapsed()) {
             collapseCell(getLeastEntropyCell());
-        else s.noLoop();
+            //Update neighbours
+            let lastX = lastCollapsedCell[0];
+            let lastY = lastCollapsedCell[1];
+            updateCell(lastX, lastY - 1);
+            updateCell(lastX + 1, lastY);
+            updateCell(lastX, lastY + 1);
+            updateCell(lastX - 1, lastY);
 
+        }
+        else s.noLoop();
 
         drawGrid(s);
         drawMousePosition(s)
@@ -87,7 +97,7 @@ function drawGrid(s) {
         for (let x = 0; x < mapSize; x++) {
             let cell = grid[y][x];
             if (cell.collapsed) {
-                let tileConfig = Object.values(inferredTilesConfig)[cell.state];
+                let tileConfig = tilesConfig[cell.state];
                 drawImg(preloadedImages[tileConfig.img], x * cellSize, y * cellSize, cellSize, cellSize, tileConfig.rotate, s);
                 continue;
             }
@@ -168,7 +178,7 @@ window.updateCell = function (x, y) {
     //Check if cell is collapsed
     if (!isValidCell(x, y)) return;
     if (grid[y][x].collapsed) return;
-
+    const cell = grid[y][x];
     //Get all neighbours
     const neighbours = [
         [x, y - 1, directions.up],
@@ -182,13 +192,13 @@ window.updateCell = function (x, y) {
         let [nx, ny, direction] = neighbour;
         if (!isValidCell(nx, ny)) continue;
         let neighbourCell = grid[ny][nx];
-        if (neighbourCell.collapsed)
-            grid[y][x].states = grid[y][x].states.filter(state => isRuleFollowed(state, neighbourCell.state, direction));
-        // else
-        // grid[y][x].states = grid[y][x].states.filter(state => neighbourCell.states.some(neighbourState => isRuleFollowed(state, neighbourState, direction)));
+        cell.states = (neighbourCell.collapsed) ?
+            cell.states = cell.states.filter(state => isRuleFollowed(state, neighbourCell.state, direction))
+            :
+            cell.states = cell.states.filter(state => neighbourCell.states.some(neighbourState => isRuleFollowed(state, neighbourState, direction)));
     }
-    if (grid[y][x].states.length == 1) collapseCell(grid[y][x]);
-    return grid[y][x]
+    if (cell.states.length == 1) collapseCell(cell);
+    return cell
 }
 
 window.updateAll = function () {
@@ -207,6 +217,12 @@ function isValidCell(x, y) {
 
 window.collapseCell = function (cell) {
     if (!cell) return;
+    if (cell.collapsed) return;
+    if (cell.states.length == 1) {
+        cell.state = cell.states[0];
+        cell.collapsed = true;
+        lastCollapsedCell = [cell.x, cell.y];
+    }
     try {
         cell.collapsed = true;
         cell.states = [cell.state = cell.states.random()];
@@ -214,11 +230,13 @@ window.collapseCell = function (cell) {
         console.log(cell);
         console.error(error);
     }
-
+    lastCollapsedCell = [cell.x, cell.y];
+    collapsedCells++
 }
 
 function isAllCollapsed() {
-    return grid.flat().every(cell => cell.collapsed);
+    return collapsedCells == mapSize * mapSize;
+    // return grid.flat().every(cell => cell.collapsed);
 }
 
 
@@ -227,13 +245,12 @@ function getEntropy(cell) {
     return cell.states.length
 }
 
-
-
-
-function getLeastEntropyCell() {
+window.getLeastEntropyCell = function () {
     let leastEntropy = grid.flat().reduce((a, b) => getEntropy(a) > getEntropy(b) ? b : a).states.length;
     let leastEntropyCells = grid.flat().filter(cell => getEntropy(cell) == leastEntropy);
-    return leastEntropyCells.random() ?? null;
+
+    const length = leastEntropyCells.length;
+    return leastEntropyCells[random(0, length - 1)];
 }
 
-new p5(p5Instance);
+window.p5Instance = new p5(p5Instance);
