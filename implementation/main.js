@@ -3,8 +3,15 @@ import "./lib/polyfill.js";
 import "./lib/utils.js";
 import "./lib/p5.min.js"
 
-const tilesConfig = await getJSONFile("tiles.config.json");
+let tilesConfig = await getJSONFile("tiles.config.json");
 const inferredTilesConfig = inferAllTileConfigs(tilesConfig);
+tilesConfig = Object.values(inferredTilesConfig);
+const directions = {
+    up: 0,
+    right: 1,
+    down: 2,
+    left: 3
+}
 const preloadedImages = {};
 const canvasSize = 2000;
 const mapSize = 40;
