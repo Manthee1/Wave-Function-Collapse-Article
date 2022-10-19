@@ -85,7 +85,30 @@ function drawGrid(s) {
                 continue;
             }
             s.fill(220);
+            s.stroke(0);
             s.rect(x * cellSize, y * cellSize, cellSize, cellSize);
+
+            //Draw states in a grid
+            let states = cell.states;
+            let rows = Math.ceil(Math.sqrt(states.length));
+            let cols = Math.ceil(states.length / rows);
+            let size = cellSize / Math.max(rows, cols);
+            for (let i = 0; i < states.length; i++) {
+                let tileConfig = tilesConfig[states[i]];
+                let row = Math.floor(i / cols);
+                let col = i % cols;
+                let newX = col * cellSize / cols + x * cellSize;
+                let newY = row * cellSize / rows + y * cellSize;
+                drawImg(preloadedImages[tileConfig.img], newX, newY, size, size, tileConfig.rotate, s);
+            }
+
+            //Draw state amount
+            s.noStroke(0);
+            s.fill(0);
+            s.textSize(cellSize / 4);
+            s.textAlign("right", "bottom")
+            s.text(cell.states.length, (x + 1) * cellSize - 5, (y + 1) * cellSize - 5);
+
         }
     }
 
