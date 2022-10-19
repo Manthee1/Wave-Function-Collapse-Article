@@ -3,6 +3,14 @@ import "./lib/polyfill.js";
 import "./lib/utils.js";
 import "./lib/p5.min.js"
 
+
+const options = {
+    drawCellStates: false,
+    drawWhenFinished: false,
+    useSeed: false,
+    seed: 45
+}
+
 let tilesConfig = await getJSONFile("tiles.config.json");
 const inferredTilesConfig = inferAllTileConfigs(tilesConfig);
 tilesConfig = Object.values(inferredTilesConfig);
@@ -33,6 +41,16 @@ function createCell(x, y) {
         x,
         y
     }
+}
+
+let random = (min, max) => Math.floor(Math.random() * (max - min + 1) + min);
+
+
+if (options.useSeed) {
+    const rand = Math.randomSeed(options.seed, {
+        maxDecimals: 0,
+    });
+    random = (min, max) => rand.range(min, max);
 }
 
 function inferAllTileConfigs(tilesConfig) {
@@ -87,7 +105,20 @@ const p5Instance = (s) => {
         }
         else s.noLoop();
 
-        drawGrid(s);
+        //If drawWhenFinished is true draw only when isAllCollapsed, otherwise draw every frame
+        if (!options.drawWhenFinished || options.drawWhenFinished == isAllCollapsed())
+            drawGrid(s);
+        else {
+            //Draw percent finished
+            s.fill(0);
+            s.stroke(1);
+            s.textSize(16);
+            s.textAlign("center", "center")
+            s.text(`${Math.floor(collapsedCells / (mapSize * mapSize) * 100)}%`, canvasSize / 2, canvasSize / 2);
+            s.noStroke(0);
+            s.text(`Generating`, canvasSize / 2, canvasSize / 2 - 32);
+        }
+
         drawMousePosition(s)
     }
 }
@@ -104,28 +135,21 @@ function drawGrid(s) {
             s.fill(220);
             s.stroke(0);
             s.rect(x * cellSize, y * cellSize, cellSize, cellSize);
-
-            //Draw states in a grid
-            let states = cell.states;
-            let rows = Math.ceil(Math.sqrt(states.length));
-            let cols = Math.ceil(states.length / rows);
-            let size = cellSize / Math.max(rows, cols);
-            for (let i = 0; i < states.length; i++) {
-                let tileConfig = tilesConfig[states[i]];
-                let row = Math.floor(i / cols);
-                let col = i % cols;
-                let newX = col * cellSize / cols + x * cellSize;
-                let newY = row * cellSize / rows + y * cellSize;
-                drawImg(preloadedImages[tileConfig.img], newX, newY, size, size, tileConfig.rotate, s);
+            if (options.drawCellStates) {
+                //Draw states in a grid
+                let states = cell.states;
+                let rows = Math.ceil(Math.sqrt(states.length));
+                let cols = Math.ceil(states.length / rows);
+                let size = cellSize / Math.max(rows, cols);
+                for (let i = 0; i < states.length; i++) {
+                    let tileConfig = tilesConfig[states[i]];
+                    let row = Math.floor(i / cols);
+                    let col = i % cols;
+                    let newX = col * cellSize / cols + x * cellSize;
+                    let newY = row * cellSize / rows + y * cellSize;
+                    drawImg(preloadedImages[tileConfig.img], newX, newY, size, size, tileConfig.rotate, s);
+                }
             }
-
-            //Draw state amount
-            s.noStroke(0);
-            s.fill(0);
-            s.textSize(cellSize / 4);
-            s.textAlign("right", "bottom")
-            s.text(cell.states.length, (x + 1) * cellSize - 5, (y + 1) * cellSize - 5);
-
         }
     }
 
@@ -170,7 +194,6 @@ function getOppositeDirection(direction) {
 function isRuleFollowed(stateA, stateB, direction) {
     const tileA = tilesConfig[stateA];
     const tileB = tilesConfig[stateB];
-    console.log(tileA, tileB, direction, tileA.connections[direction] === tileB.connections[getOppositeDirection(direction)]);
     return tileA.connections[direction] === tileB.connections[getOppositeDirection(direction)];
 }
 
@@ -211,7 +234,6 @@ window.updateAll = function () {
 
 function isValidCell(x, y) {
     const isValid = x >= 0 && x < mapSize && y >= 0 && y < mapSize
-    if (!isValid) console.info("Invalid cell", y, x);
     return isValid
 }
 
@@ -225,7 +247,8 @@ window.collapseCell = function (cell) {
     }
     try {
         cell.collapsed = true;
-        cell.states = [cell.state = cell.states.random()];
+        const length = cell.states.length;
+        cell.states = [cell.state = cell.states[random(0, length - 1)]];
     } catch (error) {
         console.log(cell);
         console.error(error);
