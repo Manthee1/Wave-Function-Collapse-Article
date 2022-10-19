@@ -36,7 +36,7 @@ function inferAllTileConfigs(tilesConfig) {
     let extrapolated = {};
     for (let tile of tilesConfig) {
         for (let i = 0; i < 4; i++) {
-            const connections = tile.connections.rotate(i)
+            const connections = tile.connections.rotate(-i)
             const connectionsString = connections.join("_")
             if (!extrapolated[connectionsString])
                 extrapolated[connectionsString] = {
