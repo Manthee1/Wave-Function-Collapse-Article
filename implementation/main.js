@@ -17,6 +17,14 @@ const defaultCell = {
     states: Array.from({ length: tilesConfig.length }, (_, i) => i),
 }
 
+function createCell(x, y) {
+    return {
+        ...defaultCell,
+        x,
+        y
+    }
+}
+
 function inferAllTileConfigs(tilesConfig) {
     let extrapolated = {};
     for (let tile of tilesConfig) {
@@ -34,7 +42,9 @@ function inferAllTileConfigs(tilesConfig) {
     return extrapolated;
 }
 
-window.grid = Array(mapSize).fill().map(() => Array(mapSize).fill().map(() => clone(defaultCell)))
+window.grid = []
+for (let y = 0; y < mapSize; y++) { grid[y] = []; for (let x = 0; x < mapSize; x++) grid[y][x] = createCell(x, y) }
+
 
 const p5Instance = (s) => {
     s.preload = () => {
