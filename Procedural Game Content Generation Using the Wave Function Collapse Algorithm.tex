@@ -1,0 +1,55 @@
+\documentclass[10pt,twoside,a4paper]{article}
+\usepackage[IL2]{fontenc} % lepšia sadzba písmena Ľ než v T1
+\usepackage[utf8]{inputenc}
+\usepackage{graphicx}
+\usepackage{url} % príkaz \url na formátovanie URL
+\usepackage{hyperref} % odkazy v texte budú aktívne (pri niektorých triedach dokumentov spôsobuje posun textu)
+
+\usepackage{cite}
+
+\pagestyle{headings}
+\title{Procedural Game Content Generation Using the Wave Function Collapse Algorithm\thanks{Semestrálny projekt v predmete Metódy inžinierskej práce, ak. rok 2022/23, vedenie: Meno Priezvisko}}
+\author{Martin Dinja\\[2pt]
+	{\small Slovak University of Technology in Bratislava}\\
+	{\small Faculty of Informatics and Information Technologies}\\
+	{\small \texttt{xdinja@stuba.sk}}
+}
+
+\date{\small 30. september 2022}
+
+\begin{document}
+
+\maketitle
+
+\tableofcontents
+
+\begin{abstract}
+    \begin{center}
+        This thesis deals with the generation of game content using the Wave Function Collapse algorithm. 
+    \end{center}
+\end{abstract}
+
+\section{Introduction}\label{sec:introduction}
+
+Motivujte čitateľa a vysvetlite, o čom píšete. Úvod sa väčšinou nedelí na časti.
+
+Uveďte explicitne štruktúru článku. Tu je nejaký príklad.
+Základný problém, ktorý bol naznačený v úvode,a jeho teória je podrobnejšie vysvetlená v časti~\ref*{theory}
+Dôležité súvislosti sú uvedené v častiach~\ref{dolezita} a~\ref{dolezitejsia}.
+Záverečné poznámky prináša časť~\ref{zaver}.
+
+\section{Theory}\label{sec:theory}
+\cite{BL22}
+\cite{CHF20}
+\cite{KLL+19}
+\cite{LRGC22}
+\cite{NMBP20}
+\section{Implementation}\label{sec:implementation}
+\section{Results}\label{sec:results}
+\section{Comparison with other methods}\label{sec:comparison}
+\section{Conclusion}\label{sec:conclusion}
+
+\bibliography{lit}
+\bibliographystyle{alpha}
+
+\end{document}

@@ -1,0 +1,36 @@
+\newcommand{\etalchar}[1]{$^{#1}$}
+\begin{thebibliography}{NMBP20}
+
+\bibitem[BL22]{BL22}
+Raphael Bailly and Guillaume Levieux.
+\newblock Genetic-wfc: Extending wave function collapse with genetic search.
+\newblock {\em IEEE Transactions on Games}, pages 1--10, 2022.
+
+\bibitem[CHF20]{CHF20}
+Darui Cheng, Honglei Han, and Guangzheng Fei.
+\newblock Automatic generation of game levels based on controllable wave
+  function collapse algorithm.
+\newblock In Nuno~J. Nunes, Lizhuang Ma, Meili Wang, Nuno Correia, and Zhigeng
+  Pan, editors, {\em Entertainment Computing -- ICEC 2020}, pages 37--50, Cham,
+  2020. Springer International Publishing.
+
+\bibitem[KLL{\etalchar{+}}19]{KLL+19}
+Hwanhee Kim, Seongtaek Lee, Hyundong Lee, Teasung Hahn, and Shinjin Kang.
+\newblock Automatic generation of game content using a graph-based wave
+  function collapse algorithm.
+\newblock In {\em 2019 IEEE Conference on Games (CoG)}, pages 1--4, 2019.
+
+\bibitem[LRGC22]{LRGC22}
+Alain Lioret, Nicolas Ruche, Etienne Gibiat, and C{\'e}dric Chopin.
+\newblock Gan applied to wave function collapse for procedural map generation.
+\newblock In {\em ACM SIGGRAPH 2022 Posters}, pages 1--2. 2022.
+
+\bibitem[NMBP20]{NMBP20}
+Tobias Nordvig~M\o{}ller, Jonas Billeskov, and George Palamas.
+\newblock Expanding wave function collapse with growing grids for procedural
+  map generation.
+\newblock In {\em International Conference on the Foundations of Digital
+  Games}, FDG '20, New York, NY, USA, 2020. Association for Computing
+  Machinery.
+
+\end{thebibliography}
