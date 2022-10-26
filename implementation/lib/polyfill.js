@@ -125,7 +125,8 @@ Math.randomSeed = function (seed = 0, options) {
         t = Math.imul(t ^ t >>> 15, t | 1);
         t ^= t + Math.imul(t ^ t >>> 7, t | 61);
         let val = ((t ^ t >>> 14) >>> 0) / 4294967296
-        return options.maxDecimals == Infinity ? val : val.floor(options.maxDecimals);
+        return val;
+        // return options.maxDecimals === Infinity ? val : val.floor(options.maxDecimals);
     }
     rand.seed = seed;
     rand.range = (min, max) => {
