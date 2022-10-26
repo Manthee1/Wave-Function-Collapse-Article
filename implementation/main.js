@@ -234,8 +234,9 @@ window.updateCell = function (x, y) {
     if (!isValidCell(x, y)) return;
     if (grid[y][x].collapsed) return;
     const cell = grid[y][x];
-    //Get all neighbours
-    const neighbours = [
+    const statesLength = cell.states.length;
+    //Get all neighbors
+    const neighbors = [
         [x, y - 1, directions.up],
         [x + 1, y, directions.right],
         [x, y + 1, directions.down],
@@ -243,17 +244,17 @@ window.updateCell = function (x, y) {
     ]
 
     //Remove all states that are not possible
-    for (let neighbour of neighbours) {
-        let [nx, ny, direction] = neighbour;
+    for (let neighbor of neighbors) {
+        let [nx, ny, direction] = neighbor;
         if (!isValidCell(nx, ny)) continue;
-        let neighbourCell = grid[ny][nx];
-        cell.states = (neighbourCell.collapsed) ?
-            cell.states = cell.states.filter(state => isRuleFollowed(state, neighbourCell.state, direction))
+        let neighborCell = grid[ny][nx];
+        cell.states = (neighborCell.collapsed) ?
+            cell.states = cell.states.filter(state => isRuleFollowed(state, neighborCell.state, direction))
             :
-            cell.states = cell.states.filter(state => neighbourCell.states.some(neighbourState => isRuleFollowed(state, neighbourState, direction)));
+            cell.states = cell.states.filter(state => neighborCell.states.some(neighborState => isRuleFollowed(state, neighborState, direction)));
     }
     if (cell.states.length == 1) collapseCell(cell);
-    return cell
+    return { cell: cell, updated: cell.states.length != statesLength };
 }
 
 window.updateAll = function () {
