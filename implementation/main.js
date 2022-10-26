@@ -8,8 +8,8 @@ const options = {
     tileSet: "roads",
     drawCellStates: false,
     drawWhenFinished: false,
-    useSeed: false,
-    seed: 45
+    useSeed: true,
+    seed: 146
 }
 
 let tilesConfig = await getJSONFile(`./tilesets/${options.tileSet}/config.json`);
@@ -44,15 +44,11 @@ function createCell(x, y) {
     }
 }
 
-let random = (min, max) => Math.floor(Math.random() * (max - min + 1) + min);
+const rand = Math.randomSeed(options.seed, {
+    maxDecimals: 0,
+})
 
-
-if (options.useSeed) {
-    const rand = Math.randomSeed(options.seed, {
-        maxDecimals: 0,
-    });
-    random = (min, max) => rand.range(min, max);
-}
+window.random = options.useSeed ? (min, max) => rand.range(min, max) : (min, max) => Math.floor(Math.random() * (max - min + 1) + min);
 
 function inferAllTileConfigs(tilesConfig) {
     let extrapolated = {};
