@@ -197,6 +197,38 @@ function isRuleFollowed(stateA, stateB, direction) {
     return tileA.connections[direction] === tileB.connections[getOppositeDirection(direction)];
 }
 
+
+function getNeighbors(x, y, collapsed = "all") {
+    let neighbors = [];
+    if (y > 0) neighbors.push(grid[y - 1][x]);
+    if (x < mapSize - 1) neighbors.push(grid[y][x + 1]);
+    if (y < mapSize - 1) neighbors.push(grid[y + 1][x]);
+    if (x > 0) neighbors.push(grid[y][x - 1]);
+
+    return neighbors.filter(n => collapsed == "all" || n.collapsed === collapsed);
+}
+
+
+function updateChain(x, y) {
+    // if (!isCollapsed(x, y)) return;
+    // Update get status of x,y neighbors and update x,y.
+    // After that check if neighbors changed and run the same function for each changed neighbor
+
+    let neighbors = getNeighbors(x, y, false)
+    updateNeighbors(x, y)
+    for (let cell of neighbors) {
+        if (cell.state != grid[cell.y][cell.x]) updateChain(cell.x, cell.y)
+    }
+
+}
+
+window.updateNeighbors = function (x, y) {
+    updateCell(x, y - 1);
+    updateCell(x + 1, y);
+    updateCell(x, y + 1);
+    updateCell(x - 1, y);
+}
+
 window.updateCell = function (x, y) {
     //Check if cell is collapsed
     if (!isValidCell(x, y)) return;
