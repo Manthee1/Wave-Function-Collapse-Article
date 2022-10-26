@@ -82,6 +82,7 @@ const p5Instance = (s) => {
     }
     s.setup = function () {
         s.createCanvas(canvasSize, canvasSize);
+        // s.noLoop();
     }
 
     s.draw = function () {
