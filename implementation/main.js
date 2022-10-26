@@ -262,11 +262,13 @@ window.updateCell = function (x, y) {
 }
 
 window.updateAll = function () {
+    let updated = false;
     for (let y = 0; y < mapSize; y++) {
         for (let x = 0; x < mapSize; x++) {
-            updateCell(x, y);
+            if (updateCell(x, y)) updated = true;
         }
     }
+    return updated;
 }
 
 function isValidCell(x, y) {
