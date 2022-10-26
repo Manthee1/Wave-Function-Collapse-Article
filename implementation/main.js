@@ -97,10 +97,10 @@ const p5Instance = (s) => {
             //Update neighbours
             let lastX = lastCollapsedCell[0];
             let lastY = lastCollapsedCell[1];
-            updateCell(lastX, lastY - 1);
-            updateCell(lastX + 1, lastY);
-            updateCell(lastX, lastY + 1);
-            updateCell(lastX - 1, lastY);
+            // updateChain(lastX, lastY);
+            updateNeighbors(lastX, lastY);
+            // run updateAll until no more changes
+            while (updateAll());
 
         }
         else s.noLoop();
@@ -128,6 +128,12 @@ function drawGrid(s) {
         for (let x = 0; x < mapSize; x++) {
             let cell = grid[y][x];
             if (cell.collapsed) {
+                if (cell.state == -1) {
+                    // draw rect and continue
+                    s.fill(0);
+                    s.rect(x * cellSize, y * cellSize, cellSize, cellSize);
+                    continue;
+                }
                 let tileConfig = tilesConfig[cell.state];
                 drawImg(preloadedImages[tileConfig.img], x * cellSize, y * cellSize, cellSize, cellSize, tileConfig.rotate, s);
                 continue;
@@ -192,6 +198,7 @@ function getOppositeDirection(direction) {
 }
 
 function isRuleFollowed(stateA, stateB, direction) {
+    if (stateA == -1 || stateB == -1) return true;
     const tileA = tilesConfig[stateA];
     const tileB = tilesConfig[stateB];
     return tileA.connections[direction] === tileB.connections[getOppositeDirection(direction)];
@@ -266,13 +273,21 @@ window.updateAll = function () {
 }
 
 function isValidCell(x, y) {
-    const isValid = x >= 0 && x < mapSize && y >= 0 && y < mapSize
-    return isValid
+    if (x < 0 || x >= mapSize || y < 0 || y >= mapSize) return false;
+    // const cell = grid[y][x];
+    // if (cell.collapsed && cell.state != null) return false;
+    return true
 }
 
 window.collapseCell = function (cell) {
     if (!cell) return;
     if (cell.collapsed) return;
+
+    if (cell.states.length == 0) {
+        //Set to -1 to indicate that this cell is not possible
+        cell.states = [cell.state = -1];
+    }
+
     if (cell.states.length == 1) {
         cell.state = cell.states[0];
         cell.collapsed = true;
@@ -281,7 +296,7 @@ window.collapseCell = function (cell) {
     try {
         cell.collapsed = true;
         const length = cell.states.length;
-        cell.states = [cell.state = cell.states[random(0, length - 1)]];
+        cell.states = [cell.state = cell.states[random(0, length)]];
     } catch (error) {
         console.log(cell);
         console.error(error);
@@ -306,7 +321,7 @@ window.getLeastEntropyCell = function () {
     let leastEntropyCells = grid.flat().filter(cell => getEntropy(cell) == leastEntropy);
 
     const length = leastEntropyCells.length;
-    return leastEntropyCells[random(0, length - 1)];
+    return leastEntropyCells[random(0, length)];
 }
 
 window.p5Instance = new p5(p5Instance);
