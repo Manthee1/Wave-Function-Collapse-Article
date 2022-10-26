@@ -5,13 +5,14 @@ import "./lib/p5.min.js"
 
 
 const options = {
+    tileSet: "roads",
     drawCellStates: false,
     drawWhenFinished: false,
     useSeed: false,
     seed: 45
 }
 
-let tilesConfig = await getJSONFile("tiles.config.json");
+let tilesConfig = await getJSONFile(`./tilesets/${options.tileSet}/config.json`);
 const inferredTilesConfig = inferAllTileConfigs(tilesConfig);
 tilesConfig = Object.values(inferredTilesConfig);
 const directions = {
@@ -61,7 +62,7 @@ function inferAllTileConfigs(tilesConfig) {
             const connectionsString = connections.join("_")
             if (!extrapolated[connectionsString])
                 extrapolated[connectionsString] = {
-                    img: tile.img,
+                    img: `./tilesets/${options.tileSet}/${tile.img}`,
                     connections: connections,
                     rotate: i
                 }
