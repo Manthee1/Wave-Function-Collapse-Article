@@ -1,0 +1,128 @@
+[
+    {
+        "img": "bridge.png",
+        "connections": [
+            1,
+            2,
+            1,
+            2
+        ]
+    },
+    {
+        "img": "component.png",
+        "connections": [
+            3,
+            3,
+            3,
+            3
+        ]
+    },
+    {
+        "img": "connection.png",
+        "connections": [
+            1,
+            0,
+            3,
+            0
+        ]
+    },
+    {
+        "img": "dskew.png",
+        "connections": [
+            1,
+            1,
+            1,
+            1
+        ]
+    },
+    {
+        "img": "skew.png",
+        "connections": [
+            1,
+            1,
+            0,
+            0
+        ]
+    },
+    {
+        "img": "substrate.png",
+        "connections": [
+            0,
+            0,
+            0,
+            0
+        ]
+    },
+    {
+        "img": "t.png",
+        "connections": [
+            0,
+            1,
+            1,
+            1
+        ]
+    },
+    {
+        "img": "track.png",
+        "connections": [
+            1,
+            0,
+            1,
+            0
+        ]
+    },
+    {
+        "img": "transition.png",
+        "connections": [
+            2,
+            0,
+            1,
+            0
+        ]
+    },
+    {
+        "img": "transitionl.png",
+        "connections": [
+            2,
+            1,
+            0,
+            0
+        ]
+    },
+    {
+        "img": "turn.png",
+        "connections": [
+            1,
+            1,
+            0,
+            0
+        ]
+    },
+    {
+        "img": "viad.png",
+        "connections": [
+            0,
+            1,
+            0,
+            1
+        ]
+    },
+    {
+        "img": "vias.png",
+        "connections": [
+            1,
+            0,
+            0,
+            0
+        ]
+    },
+    {
+        "img": "wire.png",
+        "connections": [
+            0,
+            2,
+            0,
+            2
+        ]
+    }
+]
