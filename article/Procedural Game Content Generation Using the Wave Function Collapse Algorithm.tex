@@ -116,6 +116,19 @@ Evaluating the cells is done by updating the states of each neighbor of the coll
 Finally, we check if all of the cells are collapsed, and if they are, the algorithm halts.
 Otherwise, we repeat the loop.
 
+\subsection{GUI}\label{sec:gui}
+% The GUI of the project.
+The GUI of the project is a simple interface for the user to view the satisfying progression of the algorithm.
+Its core is a p5js instance that draws the tilemap.
+Here we only have two functions. 
+The most important one is the \texttt{drawGrid} function, which draws the grid.
+Second is the \texttt{drawImg} function, which draws an image given the coordinates, size, and angle.
+
+There are also different options for how and what the GUI will draw.
+We can disable the constant drawing and instead draw it only when the algorithm has finished.
+We can also opt-in to draw every possible cell state of a non-collapsed cell.
+
+
 \section{Results}\label{sec:results}
 \section{Comparison with other methods}\label{sec:comparison}
 \section{Conclusion}\label{sec:conclusion}
