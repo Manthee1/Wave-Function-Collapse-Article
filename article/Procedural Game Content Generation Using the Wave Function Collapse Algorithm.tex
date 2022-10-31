@@ -31,12 +31,19 @@
 
 \section{Introduction}\label{sec:introduction}
 
-Motivujte čitateľa a vysvetlite, o čom píšete. Úvod sa väčšinou nedelí na časti.
+% An Introduction to the application of the wave function collapse algorithm for procedural generation of game content.
+Procedural content generation (PCG) is a general term for a system that follows some patterns and generates an output based on those patterns.
+Its use case is generating assets or content that would be too time-consuming to create manually.
+PCG is mainly connotatively tied to game content generation, but its use cases can be more creative.
+Most PCG systems use game-specific assets with game-specific rules and algorithms to generate their content.
+A more general application fit for a wide range of games is the Wave Function Collapse algorithm developed by Maxim Gumin \cite{WFC}.
+Wave Function Collapse is a greedy PCG algorithm based on the concept of collapsing a wave function, which is a mathematical representation of a quantum state.
+This method can generate a large, high-quality, consistent output from a small set of input patterns.
+It can be used in various applications, although its most commonly used for generating 2D tilemaps for games.
+It can also generate 3D models, music, poetry, and more.
+WFC's output can only be as good as its input, so it's essential to have a good set of input patterns and rules. 
+My goal in this thesis is to create a simple, configurable application that will use the WFC algorithm to generate tilemaps for games, given a user-defined set of input patterns and rules.
 
-Uveďte explicitne štruktúru článku. Tu je nejaký príklad.
-Základný problém, ktorý bol naznačený v úvode,a jeho teória je podrobnejšie vysvetlená v časti~\ref*{theory}
-Dôležité súvislosti sú uvedené v častiach~\ref{dolezita} a~\ref{dolezitejsia}.
-Záverečné poznámky prináša časť~\ref{zaver}.
 
 \section{Theory}\label{sec:theory}
 \cite{BL22}
