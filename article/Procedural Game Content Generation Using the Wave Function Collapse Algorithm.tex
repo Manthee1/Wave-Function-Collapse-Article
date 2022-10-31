@@ -56,6 +56,19 @@ Then we reevaluate all the affected tiles and their possible patterns and remove
 Then we repeat the process until there is no more entropy in the tilemap.
 
 \section{Implementation}\label{sec:implementation}
+% subsections: Preparation, infrastructure, algorithm, GUI.
+\subsection{Preparation}\label{sec:preparation}
+% The preparation of the project.
+JavaScript was chosen as the language to implement the WFC algorithm primarily for its workflow and comfort.
+And for the GUI, I chose p5js, a JavaScript library for creating graphics and animations.
+It has a simple and easy-to-use API, and it's fast enough for this project.
+
+After deciding on the language and the library, I started by creating tile images and developing a rule system for them.
+The rule system, rather than detailing every relation to every possible rotation of every tile, uses an array of four numbers representing a connection type for each side of the tile. \texttt{[top, right, bottom, left]}.
+Only the same connection types are allowed to connect to each other.
+
+With that, we can start implementing the infrastructure for the algorithm.
+
 
 
 \section{Results}\label{sec:results}
