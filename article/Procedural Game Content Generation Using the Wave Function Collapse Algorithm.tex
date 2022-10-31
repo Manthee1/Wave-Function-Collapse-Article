@@ -69,6 +69,40 @@ Only the same connection types are allowed to connect to each other.
 
 With that, we can start implementing the infrastructure for the algorithm.
 
+\subsection{Infrastructure}\label{sec:infrastructure}
+% The infrastructure of the project.
+The infrastructure of the project is the core of the algorithm.
+It makes it easier for the central part of the algorithm to work with the tilemap.
+It also contains the main functions of the algorithm.
+
+The infrastructure consists of many functions aiding the algorithm.
+The most important ones are the ones that work with the tilemap.
+
+The configuration with the rules and the tile images is stored in JSON, detailing each tile's name, picture path, and allowed connections.
+
+Foremost, we need to parse all the patterns and their rules into a format with which the algorithm can interface.
+We do this by going through each pattern, rotating it, and writing each rotation into a hash map in the form \texttt{ct1\_ct2\_ct3\_ct4: [name, img, connections:[], rotate]}. 
+With that, we get a hash map of all the possible rotations of all the patterns.
+
+From the hash map, we create a two-dimensional array of objects which contain the tile's superposition, entropy, and collapse state.
+The superposition is an integer array of all assignable patterns, the entropy is the number of superpositions, and the collapse state is a boolean value that tells us if the tile is collapsed or not.
+
+Then we only have smaller helper functions for getting a tile's entropy, getting the least entropy tile, collapsing a tile, reevaluating a tile's rules, examining the validity between two tiles, and checking if the tilemap has entirely collapsed.
+
+When updating a cell with the \texttt{updateCell} function, we first grab all of the neighboring tiles and their superpositions.
+Then we go through each neighbor, filtering out the states that fit with none of the neighbors' states.
+And finally, if the cell remains with only one pattern, we collapse it.
+
+Rule checking is especially vital to the algorithm, even though it's very straightforward.
+In the \texttt{isRuleFollowed} method we take in three parameters, state A, state B, and the direction in which A connects to B.
+If the connection type of A in the direction is the same as the connection type of B in the opposite direction, then the rule has been followed.
+In addition to more specific rules, we check if B's tile can be connected to A's tile.
+To ensure that even if the connection types are the same, tile A still needs to allow connection to tile B, preventing non-compatible tiles from connecting. For instance, if you don't want to prohibit the same tile from connecting to itself.
+
+Other GUI oriented functions described in the GUI section [\ref*{sec:gui}].
+
+Now let's go over the central part of the algorithm.
+
 
 
 \section{Results}\label{sec:results}
