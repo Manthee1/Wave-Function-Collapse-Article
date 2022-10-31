@@ -5,11 +5,12 @@ import "./lib/p5.min.js"
 
 
 const options = {
-    tileSet: "roads",
+    tileSet: "circuit",
+    size: 30,
     drawCellStates: false,
     drawWhenFinished: false,
     useSeed: true,
-    seed: 146
+    seed: 2
 }
 
 let tilesConfig = await getJSONFile(`./tilesets/${options.tileSet}/config.json`);
@@ -23,10 +24,11 @@ const directions = {
 }
 const preloadedImages = {};
 const canvasSize = 800;
-const mapSize = 20;
+const mapSize = options.size ?? 10;
 const cellSize = canvasSize / mapSize;
 const [width, height] = [canvasSize, canvasSize]
 
+let leastEntropyCells = {};
 let lastCollapsedCell = [0, 0];
 let collapsedCells = 0;
 
@@ -48,7 +50,7 @@ const rand = Math.randomSeed(options.seed, {
     maxDecimals: 0,
 })
 
-window.random = options.useSeed ? (min, max) => rand.range(min, max) : (min, max) => Math.floor(Math.random() * (max - min + 1) + min);
+window.random = options.useSeed ? (min, max) => rand.range(min, max) : (min, max) => Math.floor(Math.random() * (max - min) + min);
 
 function inferAllTileConfigs(tilesConfig) {
     let extrapolated = {};
@@ -58,6 +60,7 @@ function inferAllTileConfigs(tilesConfig) {
             const connectionsString = connections.join("_")
             if (!extrapolated[connectionsString])
                 extrapolated[connectionsString] = {
+                    name: tile?.name ?? tile.img.split('.')[0],
                     img: `./tilesets/${options.tileSet}/${tile.img}`,
                     connections: connections,
                     rotate: i
@@ -98,6 +101,7 @@ const p5Instance = (s) => {
             // updateChain(lastX, lastY);
             updateNeighbors(lastX, lastY);
             // run updateAll until no more changes
+            // updateChain(lastX, lastY)
             while (updateAll());
 
         }
@@ -174,11 +178,11 @@ function drawMousePosition(s) {
     s.stroke(255);
     s.rect(x * cellSize, y * cellSize, cellSize, cellSize);
     //Text bottom right
-    s.fill(0);
-    s.noStroke();
+    s.fill(255);
+    s.stroke(1);
     s.textSize(16);
     s.textAlign("right", "bottom")
-    s.text(`${x}, ${y}`, canvasSize - 15, canvasSize - 15);
+    s.text(`${y}, ${x}`, canvasSize - 15, canvasSize - 15);
 }
 
 function drawImg(img, x, y, width, height, angle, s) {
@@ -199,7 +203,18 @@ function isRuleFollowed(stateA, stateB, direction) {
     if (stateA == -1 || stateB == -1) return true;
     const tileA = tilesConfig[stateA];
     const tileB = tilesConfig[stateB];
-    return tileA.connections[direction] === tileB.connections[getOppositeDirection(direction)];
+    let valA = tileA.connections[direction];
+    let valB = tileB.connections[getOppositeDirection(direction)];
+    valB = typeof valB == "object" ? valB.value : valB
+
+    if (typeof valA == "object") {
+        let allowedTiles = valA.tiles;
+        valA = valA.value;
+        // if (tileA.name == "connection" && tileB.name == "connection")
+        // console.log(valA == valB, allowedTiles.includes(tileB.name));
+        return valA === valB && allowedTiles.includes(tileB.name);
+    }
+    return valA === valB;
 }
 
 
@@ -215,7 +230,7 @@ function getNeighbors(x, y, collapsed = "all") {
 
 
 function updateChain(x, y) {
-    // if (!isCollapsed(x, y)) return;
+    if (grid[y][x].collapsed) return;
     // Update get status of x,y neighbors and update x,y.
     // After that check if neighbors changed and run the same function for each changed neighbor
 
@@ -259,14 +274,19 @@ window.updateCell = function (x, y) {
             cell.states = cell.states.filter(state => neighborCell.states.some(neighborState => isRuleFollowed(state, neighborState, direction)));
     }
     if (cell.states.length == 1) collapseCell(cell);
-    return { cell: cell, updated: cell.states.length != statesLength };
+    const isUpdated = cell.states.length != statesLength;
+    if (isUpdated) {
+        leastEntropyCells[cell.y + "_" + cell.x] = cell
+    }
+    return { cell: cell, updated: isUpdated };
 }
 
 window.updateAll = function () {
     let updated = false;
     for (let y = 0; y < mapSize; y++) {
         for (let x = 0; x < mapSize; x++) {
-            if (updateCell(x, y)) updated = true;
+            let uc = updateCell(x, y) ?? false
+            if (uc.updated) updated = true;
         }
     }
     return updated;
@@ -317,11 +337,20 @@ function getEntropy(cell) {
 }
 
 window.getLeastEntropyCell = function () {
-    let leastEntropy = grid.flat().reduce((a, b) => getEntropy(a) > getEntropy(b) ? b : a).states.length;
-    let leastEntropyCells = grid.flat().filter(cell => getEntropy(cell) == leastEntropy);
-
-    const length = leastEntropyCells.length;
+    const gridFlat = grid.flat()
+    let leastEntropy = gridFlat.reduce((a, b) => getEntropy(a) > getEntropy(b) ? b : a).states.length;
+    let leastEntropyCells = gridFlat.filter(cell => getEntropy(cell) == leastEntropy);
     return leastEntropyCells[random(0, length)];
+
+
+    // let cells = Object.values(leastEntropyCells)
+    // if (cells.length == 0)
+    //     return grid[random(0, mapSize)][random(0, mapSize)];
+    // let leastEntropy = cells.reduce((a, b) => getEntropy(a) > getEntropy(b) ? b : a).states.length;
+    // cells = cells.filter(cell => getEntropy(cell) == leastEntropy);
+    // const length = cells.length;
+    // // console.log(length);
+    // return cells[random(0, length)];
 }
 
 window.p5Instance = new p5(p5Instance);
