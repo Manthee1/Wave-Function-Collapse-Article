@@ -9,7 +9,7 @@ const options = {
     size: 30,
     drawCellStates: false,
     drawWhenFinished: false,
-    useSeed: true,
+    useSeed: false,
     seed: 2
 }
 
@@ -338,7 +338,7 @@ function getEntropy(cell) {
 
 window.getLeastEntropyCell = function () {
     const gridFlat = grid.flat()
-    let leastEntropy = gridFlat.reduce((a, b) => getEntropy(a) > getEntropy(b) ? b : a).states.length;
+    let leastEntropy = gridFlat.reduce((a, b) => Math.max(2, getEntropy(a)) > Math.max(2, getEntropy(b)) ? b : a).states.length;
     let leastEntropyCells = gridFlat.filter(cell => getEntropy(cell) == leastEntropy);
     return leastEntropyCells[random(0, length)];
 
