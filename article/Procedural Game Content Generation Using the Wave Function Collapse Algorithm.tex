@@ -46,6 +46,22 @@ My goal in this thesis is to create a simple, configurable application that will
 
 
 \section{Theory}\label{sec:theory}
+As mentioned in the introduction [\ref*{sec:introduction}], the Wave Function Collapse algorithm is a greedy PCG algorithm based on the concept of collapsing a wave function, which is a mathematical representation of a quantum state.
+A function starts off in a superposition of values and collapses when that function is measured.
+The result of the measurement is the value of the function at that point.
+So applying that into PCG of a 2D tilemap, first, we need to define a set of input patterns and their rules in relation to each other.
+Then the algorithm will assign each tile a superposition of all possible patterns.
+After prepending the input patterns, the algorithm will assign one pattern to a tile with the least superpositions, or also known as the least entropy.
+Essentially collapsing its wave function, which is also why it is called a collapse algorithm.
+Then we revaluate all the affected tiles and their possible patterns and remove the ones that don't fit the rules.
+Then we repeat the process until there is no more entropy in the tilemap.
+
+\section{Implementation}\label{sec:implementation}
+
+
+\section{Results}\label{sec:results}
+\section{Comparison with other methods}\label{sec:comparison}
+\section{Conclusion}\label{sec:conclusion}
 \cite{BL22}
 \cite{CHF20}
 \cite{KLL+19}
