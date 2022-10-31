@@ -104,6 +104,17 @@ Other GUI oriented functions described in the GUI section [\ref*{sec:gui}].
 Now let's go over the central part of the algorithm.
 
 
+\subsection{Algorithm}\label{sec:algorithm}
+% The main part of the project.
+The central part of the project is the algorithm itself.
+It uses the helper, interface, and infrastructure functions to work with the tilemap.
+We start by parsing the JSON file into a hash map and preloading all the needed tile images.
+Then we create the tilemap and fill each tile's state array with all possible states.
+Then we start the main loop of the algorithm.
+In the loop, we get the tile with the least entropy, collapse it, and reevaluate all the affected cells.
+Evaluating the cells is done by updating the states of each neighbor of the collapsed cell, then reevaluating the states of their neighbors, and so on, until we reach a point where cell states don't change any more.
+Finally, we check if all of the cells are collapsed, and if they are, the algorithm halts.
+Otherwise, we repeat the loop.
 
 \section{Results}\label{sec:results}
 \section{Comparison with other methods}\label{sec:comparison}
