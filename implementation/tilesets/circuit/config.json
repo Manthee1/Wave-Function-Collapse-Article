@@ -1,5 +1,6 @@
 [
     {
+        "name": "bridge",
         "img": "bridge.png",
         "connections": [
             1,
@@ -9,6 +10,7 @@
         ]
     },
     {
+        "name": "component",
         "img": "component.png",
         "connections": [
             3,
@@ -18,15 +20,54 @@
         ]
     },
     {
+        "name": "connection",
         "img": "connection.png",
         "connections": [
             1,
-            0,
-            3,
-            0
+            {
+                "value": 4,
+                "tiles": [
+                    "corner",
+                    "connection"
+                ]
+            },
+            {
+                "value": 3,
+                "tiles": [
+                    "component"
+                ]
+            },
+            {
+                "value": 4,
+                "tiles": [
+                    "corner",
+                    "connection"
+                ]
+            }
         ]
     },
     {
+        "name": "corner",
+        "img": "corner.png",
+        "connections": [
+            0,
+            0,
+            {
+                "value": 4,
+                "tiles": [
+                    "connection"
+                ]
+            },
+            {
+                "value": 4,
+                "tiles": [
+                    "connection"
+                ]
+            }
+        ]
+    },
+    {
+        "name": "dskew",
         "img": "dskew.png",
         "connections": [
             1,
@@ -36,6 +77,7 @@
         ]
     },
     {
+        "name": "skew",
         "img": "skew.png",
         "connections": [
             1,
@@ -45,6 +87,7 @@
         ]
     },
     {
+        "name": "substrate",
         "img": "substrate.png",
         "connections": [
             0,
@@ -54,6 +97,7 @@
         ]
     },
     {
+        "name": "t",
         "img": "t.png",
         "connections": [
             0,
@@ -63,6 +107,7 @@
         ]
     },
     {
+        "name": "track",
         "img": "track.png",
         "connections": [
             1,
@@ -72,6 +117,7 @@
         ]
     },
     {
+        "name": "transition",
         "img": "transition.png",
         "connections": [
             2,
@@ -81,6 +127,7 @@
         ]
     },
     {
+        "name": "transitionl",
         "img": "transitionl.png",
         "connections": [
             2,
@@ -90,6 +137,7 @@
         ]
     },
     {
+        "name": "turn",
         "img": "turn.png",
         "connections": [
             1,
@@ -99,6 +147,7 @@
         ]
     },
     {
+        "name": "viad",
         "img": "viad.png",
         "connections": [
             0,
@@ -108,6 +157,7 @@
         ]
     },
     {
+        "name": "vias",
         "img": "vias.png",
         "connections": [
             1,
@@ -117,6 +167,7 @@
         ]
     },
     {
+        "name": "wire",
         "img": "wire.png",
         "connections": [
             0,
