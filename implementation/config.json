@@ -1,0 +1,63 @@
+{
+    "options": {
+        "mapSize": {
+            "label": "Map size",
+            "type": "number",
+            "default": 20
+        },
+        "canvasSize": {
+            "label": "Canvas size",
+            "type": "number",
+            "default": 800
+        },
+        "tileSet": {
+            "label": "Tileset",
+            "type": "select",
+            "options": [
+                {
+                    "label": "Roads",
+                    "value": "roads"
+                },
+                {
+                    "label": "Circuit",
+                    "value": "circuit"
+                },
+                {
+                    "label": "Floorplan",
+                    "value": "floorplan"
+                }
+            ],
+            "default": "roads"
+        },
+        "drawCellStates": {
+            "label": "Draw cell states",
+            "type": "checkbox",
+            "default": false
+        },
+        "drawWhenFinished": {
+            "label": "Draw when finished",
+            "type": "checkbox",
+            "default": false
+        },
+        "noUpdates": {
+            "label": "No gui updates",
+            "type": "checkbox",
+            "default": false
+        },
+        "updateFrequency": {
+            "label": "Update frequency",
+            "type": "number",
+            "default": 20
+        },
+        "useSeed": {
+            "label": "Use seed",
+            "type": "checkbox",
+            "default": true
+        },
+        "seed": {
+            "label": "Seed",
+            "type": "number",
+            "default": 20
+        }
+    }
+}
