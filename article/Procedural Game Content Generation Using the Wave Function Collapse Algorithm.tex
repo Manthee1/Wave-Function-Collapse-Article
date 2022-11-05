@@ -163,6 +163,34 @@ Defining the rules for these tiles, we can generate a 10 by 10 tilemap with the 
 
 
 \section{Comparison with other methods}\label{sec:comparison}
+% subsections: other methods, pros and cons.
+When it comes to procedurally generating some content, there are countless of other methods than WFC to choose from.
+Some of them are more suited for more specific tasks, while others are more general.
+Some are faster, while others are slower. Some are more complex, while others are simpler.
+Comparing them is a difficult task, since they have wildly different approaches and goals.
+But we can still compare WFC to some of the more related methods.
+
+As previously mentioned WFC is a constraint-based algorithm. This makes it very configurable, and very deterministic, but it's not very interactive.
+A very similar algorithm is Model Synthesis, which is a constraint-based algorithm mainly used for generating 3D models.
+Paul Merrell, the creator of model synthesis has compared the two algorithms in his paper\cite{Mer21}.
+\begin{quote}
+    \textit{Model synthesis and WFC use nearly the same algorithm and produce similar results. WFC picks cells in a different
+order and does not modify in blocks. This causes the algorithm to fail more on some large models.}
+\end{quote}
+
+Another algorithm that is very similar to WFC is the Cellular Automata algorithm.
+Cellular Automata's model consists of a grid of cells, each of which has a state.
+The state of a cell is determined by the state of its neighbors. Each new generation is created according to a set of rules.
+The rules are usually simple, and the algorithm is very fast, but it's not very controllable or deterministic.
+Its main use case is in generating terrain like caves, rivers, and mountains. It is the foundation for the world generation of Minecraft.
+
+\begin{figure}[!h]
+    \centering
+    \includegraphics[width=0.5\textwidth]{figures/cellular-automata-cave.png}
+    \caption{Cellular Automata Cave Example}\label{fig:cellular_automata}
+\end{figure}
+
+
 \section{Conclusion}\label{sec:conclusion}
 % \cite{BL22}
 % \cite{CHF20}
