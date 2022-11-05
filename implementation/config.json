@@ -3,7 +3,7 @@
         "mapSize": {
             "label": "Map size",
             "type": "number",
-            "default": 20
+            "default": 40
         },
         "canvasSize": {
             "label": "Canvas size",
@@ -29,20 +29,28 @@
             ],
             "default": "roads"
         },
-        "drawCellStates": {
+        "drawConfig": {
             "label": "Draw cell states",
-            "type": "checkbox",
-            "default": false
-        },
-        "drawWhenFinished": {
-            "label": "Draw when finished",
-            "type": "checkbox",
-            "default": false
-        },
-        "noUpdates": {
-            "label": "No gui updates",
-            "type": "checkbox",
-            "default": false
+            "type": "radio",
+            "options": [
+                {
+                    "label": "Draw Normally",
+                    "value": "normal"
+                },
+                {
+                    "label": "Draw cell states",
+                    "value": "states"
+                },
+                {
+                    "label": "Draw percentages",
+                    "value": "percentages"
+                },
+                {
+                    "label": "Draw when finished",
+                    "value": "finished"
+                }
+            ],
+            "default": "normal"
         },
         "updateFrequency": {
             "label": "Update frequency",
@@ -52,7 +60,7 @@
         "useSeed": {
             "label": "Use seed",
             "type": "checkbox",
-            "default": true
+            "default": false
         },
         "seed": {
             "label": "Seed",

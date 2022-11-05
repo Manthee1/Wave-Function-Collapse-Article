@@ -52,7 +52,7 @@ function drawGrid(s) {
             s.fill(220);
             s.stroke(0);
             s.rect(x * cellSize, y * cellSize, cellSize, cellSize);
-            if (options.drawCellStates) {
+            if (options.drawConfig == "states") {
                 //Draw states in a grid
                 let states = cell.states;
                 let rows = Math.ceil(Math.sqrt(states.length));
@@ -78,21 +78,6 @@ function drawGrid(s) {
     s.pop();
 }
 
-function drawMousePosition(s) {
-    let x = Math.floor(s.mouseX / cellSize);
-    let y = Math.floor(s.mouseY / cellSize);
-    //Draw mouse position
-    s.fill(0, 0, 255);
-    s.noFill();
-    s.stroke(255);
-    s.rect(x * cellSize, y * cellSize, cellSize, cellSize);
-    //Text bottom right
-    s.fill(255);
-    s.stroke(1);
-    s.textSize(16);
-    s.textAlign("right", "bottom")
-    s.text(`${y}, ${x}`, canvasSize - 15, canvasSize - 15);
-}
 
 function drawImg(img, x, y, width, height, angle, s) {
     s.push();
@@ -247,7 +232,7 @@ function getEntropy(cell) {
     return cell.states.length
 }
 window.times = []
-window.getLeastEntropyCell = function () {
+function getLeastEntropyCell() {
 
     let leastEntropy = Infinity;
     let cells = [grid[random(0, mapSize)][random(0, mapSize)]];
@@ -329,6 +314,7 @@ async function run(newOptions) {
     const stopButton = document.createElement("button");
     stopButton.innerText = "⏹";
     stopButton.onclick = () => {
+        collapsedCells = mapSize * mapSize;
         p5Instance.noLoop();
         resolve();
     }
@@ -341,29 +327,39 @@ async function run(newOptions) {
     window.p5Instance = p5Instance;
     let redrawEvery = options.updateFrequency ?? 10;
     let runsTillRedraw = redrawEvery;
-    while (!isAllCollapsed()) {
+    p5Instance.noUpdates = options.drawConfig == "finished" ?? false;
+    p5Instance.redraw();
+    await sleep(100);
+    p5Instance.redraw();
+    await sleep(100);
+
+    let updateCanvas = options.drawConfig == "finished" ? () => { } : async () => {
         runsTillRedraw--
-        if (!isAllCollapsed()) {
-            collapseCell(getLeastEntropyCell());
-            //Update neighbours
-            let lastX = lastCollapsedCell[0];
-            let lastY = lastCollapsedCell[1];
-            // updateChain(lastX, lastY);
-            updateNeighbors(lastX, lastY);
-            // run updateAll until no more changes
-            // updateChain(lastX, lastY)
-            while (updateAll());
-        }
-        if (options.noUpdates) continue;
-        //Every 5 runs render the canvas
-        if (runsTillRedraw == 0) {
-            console.log("Redrawing");
-            p5Instance.redraw();
-            runsTillRedraw = redrawEvery;
-            await new Promise(resolve => setTimeout(resolve, 0));
-        }
+        if (runsTillRedraw != 0) return;
+        await p5Instance.redraw();
+        runsTillRedraw = redrawEvery;
+        await sleep(0);
     }
-    p5Instance.noLoop();
+
+    while (!isAllCollapsed()) {
+        if (!p5Instance._loop) { await sleep(50); continue }
+        collapseCell(getLeastEntropyCell());
+        //Update neighbours
+        let lastX = lastCollapsedCell[0];
+        let lastY = lastCollapsedCell[1];
+        // updateChain(lastX, lastY);
+        updateNeighbors(lastX, lastY);
+        // run updateAll until no more changes
+        // updateChain(lastX, lastY)
+        while (updateAll());
+        //Update canvas
+        await updateCanvas();
+
+    }
+
+    p5Instance.noUpdates = false;
+    p5Instance.redraw();
+
     resolve(true);
 
 
@@ -412,7 +408,8 @@ const createP5Instance = function (options) {
             }
             s.setup = function () {
                 s.createCanvas(canvasSize, canvasSize);
-                // s.noLoop();
+                //Increase fps
+                s.frameRate(120);
             }
 
             s.draw = function () {
@@ -420,8 +417,17 @@ const createP5Instance = function (options) {
                 s.noStroke();
                 s.background(255);
 
-                //If drawWhenFinished is true draw only when isAllCollapsed, otherwise draw every frame
-                if (!options.drawWhenFinished || options.drawWhenFinished == isAllCollapsed())
+                if (s.noUpdates) {
+                    p5Instance.textAlign(p5Instance.CENTER, p5Instance.CENTER);
+                    p5Instance.textSize(32);
+                    p5Instance.text("Generating...", width / 2, height / 2);
+                    p5Instance.textSize(16);
+                    p5Instance.text("Live updates are disabled", width / 2, height / 2 + 32);
+                    return;
+                }
+
+                //If drawConfig is percentages draw only when isAllCollapsed, otherwise draw every frame
+                if (options.drawConfig != "percentages" || (options.drawConfig == "percentages" && isAllCollapsed()))
                     drawGrid(s);
                 else {
                     //Draw percent finished
@@ -433,8 +439,6 @@ const createP5Instance = function (options) {
                     s.noStroke(0);
                     s.text(`Generating`, canvasSize / 2, canvasSize / 2 - 32);
                 }
-
-                drawMousePosition(s)
             }
         }
         instance = new p5(p5InstanceConfig);
