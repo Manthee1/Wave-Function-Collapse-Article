@@ -8,7 +8,7 @@
 \usepackage{cite}
 
 \pagestyle{headings}
-\title{Procedural Game Content Generation Using the Wave Function Collapse Algorithm\thanks{Semester project in the subject Methods of engineering work, if. year 2022/23, management: Name Surname}}
+\title{Procedural Game Content Generation Using the Wave Function Collapse Algorithm\thanks{Semester project in the subject Methods of engineering work, year 2022/23, management: Name Surname}}
 \author{Martin Dinja\\[2pt]
 	{\small Slovak University of Technology in Bratislava}\\
 	{\small Faculty of Informatics and Information Technologies}\\
@@ -25,7 +25,7 @@
 
 \begin{abstract}
     \begin{center}
-        This thesis deals with the generation of game content using the Wave Function Collapse algorithm. 
+        This thesis deals with the problem of generating game content using the Wave Function Collapse algorithm. The algorithm is described in detail and its application to the generation of game content is demonstrated. The thesis also contains a comparison of the algorithm with other methods of generating game content.
     \end{center}
 \end{abstract}
 
@@ -36,7 +36,7 @@ Procedural content generation (PCG) is a general term for a system that follows 
 Its use case is generating assets or content that would be too time-consuming to create manually.
 PCG is mainly connotatively tied to game content generation, but its use cases can be more creative.
 Most PCG systems use game-specific assets with game-specific rules and algorithms to generate their content.
-A more general application fit for a wide range of games is the Wave Function Collapse algorithm developed by Maxim Gumin \cite{WFC}.
+A more general application fit for a wide range of games is the Wave Function Collapse algorithm developed by Maxim Gumin~\cite{WFC}.
 Wave Function Collapse is a greedy PCG algorithm based on the concept of collapsing a wave function, which is a mathematical representation of a quantum state.
 This method can generate a large, high-quality, consistent output from a small set of input patterns.
 It can be used in various applications, although its most commonly used for generating 2D tilemaps for games.
@@ -46,6 +46,7 @@ My goal in this thesis is to create a simple, configurable application that will
 
 
 \section{Theory}\label{sec:theory}
+% Theoretical background of the wave function collapse algorithm.
 As mentioned in the introduction [\ref*{sec:introduction}], the Wave Function Collapse algorithm is a greedy PCG algorithm based on the concept of collapsing a wave function, which is a mathematical representation of a quantum state.
 A function starts in a superposition of values and collapses when that function is measured.
 The result of the measurement is the value of the function at that point.
@@ -137,7 +138,7 @@ The weight value will be used to determine the likelihood of a tile being collap
 We can also expand WFC with generic search, giving it the ability to generate levels targeting specific play experiences.
 This is the topic of a paper released by Raphael Bailly and Guillaume Levieux\cite{BL22}.
 
-There is also a way to augment the algorithm with the Growing Grid neural network for procedural map generation \cite{NMBP20}
+There is also a way to augment the algorithm with the Growing Grid neural network for procedural map generation~\cite{NMBP20}
 
 We can take control to another level and introduce more constraints to the algorithm making the output seem more Human-Designed.
 As detailed in the paper by Darui Cheng, Honglei Han, and Guangzheng Fei\cite{CHF20}.
