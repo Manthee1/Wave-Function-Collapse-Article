@@ -57,6 +57,11 @@
             "type": "number",
             "default": 20
         },
+        "lazyRuleChecking": {
+            "label": "Lazy rule checking",
+            "type": "checkbox",
+            "default": false
+        },
         "useSeed": {
             "label": "Use seed",
             "type": "checkbox",

@@ -351,7 +351,7 @@ async function run(newOptions) {
         updateNeighbors(lastX, lastY);
         // run updateAll until no more changes
         // updateChain(lastX, lastY)
-        while (updateAll());
+        if (!options.lazyRuleChecking) while (updateAll());
         //Update canvas
         await updateCanvas();
 
