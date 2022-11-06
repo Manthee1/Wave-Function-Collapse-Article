@@ -117,12 +117,19 @@ Starting off with a simple example (Figure~\ref{fig:example1}).
 \end{figure}
 
 Defining the rules for these tiles, we can generate a 10 by 10 tilemap with the following result (Figure~\ref{fig:example1map}):
+The generation shouldn't take more than a second.
 
 \begin{figure}[h]
     \centering
     \includegraphics[width=0.5\textwidth]{figures/roads_output.png}
     \caption{Road Output}\label{fig:example1map}
 \end{figure}
+
+Altho the algorithms is very simple, it tends to break when the rule-set is more complex, and when the grid size is bigger.
+This is due to the fact that the algorithm is greedy and it tends to collapse the most common patterns first, which can lead to a lot of dead-ends.
+
+Optimizations can be made to the algorithm, and the rule system can be expanded to support more complex rules.
+There is a lot of room for improvement, but for now, it is a good start.
 
 \section{Comparison with other methods}\label{sec:comparison}
 % subsections: other methods, pros and cons.
