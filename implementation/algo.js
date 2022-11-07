@@ -3,7 +3,7 @@ import "./lib/p5.min.js"
 
 //Globals
 let options = {}
-let inferredTilesConfig, tilesConfig;
+let inferredTilesConfig, tilesConfig, tilesOptions;
 let p5Instance;
 let canvasSize, mapSize, cellSize, width, height, leastEntropyCells, lastCollapsedCell, collapsedCells
 let preloadedImages = {};
@@ -14,11 +14,15 @@ let directions = {
     left: 3
 }
 
+const tilesOptionsDefaults = {
+    weights: false
+}
+
 let random;
 let grid = []
 function inferAllTileConfigs(tilesConfig) {
     let extrapolated = {};
-    for (let tile of tilesConfig) {
+    for (let tile of tilesConfig.tiles) {
         for (let i = 0; i < 4; i++) {
             const connections = tile.connections.rotate(-i)
             const connectionsString = connections.join("_")
@@ -26,6 +30,7 @@ function inferAllTileConfigs(tilesConfig) {
                 extrapolated[connectionsString] = {
                     name: tile?.name ?? tile.img.split('.')[0],
                     img: `./tilesets/${options.tileSet}/${tile.img}`,
+                    weight: tile.weight,
                     connections: connections,
                     rotate: i
                 }
@@ -193,31 +198,51 @@ function isValidCell(x, y) {
     return true
 }
 
+function getRandomCellState(states) {
+    // return random state  weighted
+
+    if (!tilesOptions.weights) return states[random(0, states.length)]
+
+    let sum = states.reduce((sum, state) => sum + tilesConfig[state].weight, 0);
+    let randVal = random(0, sum);
+    let current = 0;
+    for (let state of states) {
+        const tile = tilesConfig[state]
+        current += tile.weight;
+        if (randVal < current) {
+            return state;
+        }
+    }
+
+}
+
 function collapseCell(cell) {
     if (!cell) return;
     if (cell.collapsed) return;
 
-    if (cell.states.length == 0) {
-        //Set to -1 to indicate that this cell is not possible
-        cell.states = [cell.state = -1];
-    }
+    switch (cell.states.length) {
+        case 0:
+            cell.states = [cell.state = -1];
+            break;
+        case 1:
+            cell.state = cell.states[0];
+            break;
+        default:
+            try {
+                // const length = cell.states.length;
+                // cell.states = [cell.state = cell.states[random(0, length)]];
+                cell.states = [cell.state = getRandomCellState(cell.states)];
 
-    if (cell.states.length == 1) {
-        cell.state = cell.states[0];
-        cell.collapsed = true;
-        lastCollapsedCell = [cell.x, cell.y];
-    }
-    try {
-        cell.collapsed = true;
-        const length = cell.states.length;
-        cell.states = [cell.state = cell.states[random(0, length)]];
-    } catch (error) {
-        console.log(cell);
-        console.error(error);
+            } catch (error) {
+                console.log(cell);
+                console.error(error);
+            }
+            break;
     }
     //Remove cell from least entropy cells
     delete leastEntropyCells[cell.y + "_" + cell.x];
     lastCollapsedCell = [cell.x, cell.y];
+    cell.collapsed = true;
     collapsedCells++
 }
 
@@ -257,8 +282,9 @@ async function run(newOptions) {
     options = newOptions ?? {};
     tilesConfig = await getJSONFile(`./tilesets/${options.tileSet}/config.json`);
     inferredTilesConfig = inferAllTileConfigs(tilesConfig);
+    tilesOptions = Object.assign(tilesOptionsDefaults, tilesConfig.options)
     tilesConfig = Object.values(inferredTilesConfig);
-
+    console.log(tilesConfig);
     preloadedImages = {};
     canvasSize = options.canvasSize
     mapSize = options.mapSize;
@@ -287,7 +313,7 @@ async function run(newOptions) {
         maxDecimals: 0,
     })
 
-    random = options.useSeed ? (min, max) => rand.range(min, max) : (min, max) => Math.floor(Math.random() * (max - min) + min);
+    random = options.useSeed ? (min = 0, max = 1) => rand.range(min, max) : (min = 0, max = 1) => Math.floor(Math.random() * (max - min) + min);
     grid = []
     for (let y = 0; y < mapSize; y++) { grid[y] = []; for (let x = 0; x < mapSize; x++) grid[y][x] = createCell(x, y) }
 
