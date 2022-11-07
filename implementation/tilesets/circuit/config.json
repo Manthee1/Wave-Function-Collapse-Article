@@ -1,179 +1,199 @@
-[
-    {
-        "name": "bridge",
-        "img": "bridge.png",
-        "connections": [
-            1,
-            2,
-            1,
-            2
-        ]
+{
+    "options": {
+        "weights": true
     },
-    {
-        "name": "component",
-        "img": "component.png",
-        "connections": [
-            3,
-            3,
-            3,
-            3
-        ]
-    },
-    {
-        "name": "connection",
-        "img": "connection.png",
-        "connections": [
-            1,
-            {
-                "value": 4,
-                "tiles": [
-                    "corner",
-                    "connection"
-                ]
-            },
-            {
-                "value": 3,
-                "tiles": [
-                    "component"
-                ]
-            },
-            {
-                "value": 4,
-                "tiles": [
-                    "corner",
-                    "connection"
-                ]
-            }
-        ]
-    },
-    {
-        "name": "corner",
-        "img": "corner.png",
-        "connections": [
-            0,
-            0,
-            {
-                "value": 4,
-                "tiles": [
-                    "connection"
-                ]
-            },
-            {
-                "value": 4,
-                "tiles": [
-                    "connection"
-                ]
-            }
-        ]
-    },
-    {
-        "name": "dskew",
-        "img": "dskew.png",
-        "connections": [
-            1,
-            1,
-            1,
-            1
-        ]
-    },
-    {
-        "name": "skew",
-        "img": "skew.png",
-        "connections": [
-            1,
-            1,
-            0,
-            0
-        ]
-    },
-    {
-        "name": "substrate",
-        "img": "substrate.png",
-        "connections": [
-            0,
-            0,
-            0,
-            0
-        ]
-    },
-    {
-        "name": "t",
-        "img": "t.png",
-        "connections": [
-            0,
-            1,
-            1,
-            1
-        ]
-    },
-    {
-        "name": "track",
-        "img": "track.png",
-        "connections": [
-            1,
-            0,
-            1,
-            0
-        ]
-    },
-    {
-        "name": "transition",
-        "img": "transition.png",
-        "connections": [
-            2,
-            0,
-            1,
-            0
-        ]
-    },
-    {
-        "name": "transitionl",
-        "img": "transitionl.png",
-        "connections": [
-            2,
-            1,
-            0,
-            0
-        ]
-    },
-    {
-        "name": "turn",
-        "img": "turn.png",
-        "connections": [
-            1,
-            1,
-            0,
-            0
-        ]
-    },
-    {
-        "name": "viad",
-        "img": "viad.png",
-        "connections": [
-            0,
-            1,
-            0,
-            1
-        ]
-    },
-    {
-        "name": "vias",
-        "img": "vias.png",
-        "connections": [
-            1,
-            0,
-            0,
-            0
-        ]
-    },
-    {
-        "name": "wire",
-        "img": "wire.png",
-        "connections": [
-            0,
-            2,
-            0,
-            2
-        ]
-    }
-]
+    "tiles": [
+        {
+            "name": "bridge",
+            "img": "bridge.png",
+            "weight": 1,
+            "connections": [
+                1,
+                2,
+                1,
+                2
+            ]
+        },
+        {
+            "name": "component",
+            "img": "component.png",
+            "weight": 20,
+            "connections": [
+                3,
+                3,
+                3,
+                3
+            ]
+        },
+        {
+            "name": "connection",
+            "img": "connection.png",
+            "weight": 10,
+            "connections": [
+                1,
+                {
+                    "value": 4,
+                    "tiles": [
+                        "corner",
+                        "connection"
+                    ]
+                },
+                {
+                    "value": 3,
+                    "tiles": [
+                        "component"
+                    ]
+                },
+                {
+                    "value": 4,
+                    "tiles": [
+                        "corner",
+                        "connection"
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "corner",
+            "img": "corner.png",
+            "weight": 10,
+            "connections": [
+                0,
+                0,
+                {
+                    "value": 4,
+                    "tiles": [
+                        "connection"
+                    ]
+                },
+                {
+                    "value": 4,
+                    "tiles": [
+                        "connection"
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "dskew",
+            "img": "dskew.png",
+            "weight": 2,
+            "connections": [
+                1,
+                1,
+                1,
+                1
+            ]
+        },
+        {
+            "name": "skew",
+            "img": "skew.png",
+            "weight": 2,
+            "connections": [
+                1,
+                1,
+                0,
+                0
+            ]
+        },
+        {
+            "name": "substrate",
+            "img": "substrate.png",
+            "weight": 2,
+            "connections": [
+                0,
+                0,
+                0,
+                0
+            ]
+        },
+        {
+            "name": "t",
+            "img": "t.png",
+            "weight": 0.1,
+            "connections": [
+                0,
+                1,
+                1,
+                1
+            ]
+        },
+        {
+            "name": "track",
+            "img": "track.png",
+            "weight": 2,
+            "connections": [
+                1,
+                0,
+                1,
+                0
+            ]
+        },
+        {
+            "name": "transition",
+            "img": "transition.png",
+            "weight": 0.4,
+            "connections": [
+                2,
+                0,
+                1,
+                0
+            ]
+        },
+        {
+            "name": "transitionl",
+            "img": "transitionl.png",
+            "weight": 0.2,
+            "connections": [
+                2,
+                1,
+                0,
+                0
+            ]
+        },
+        {
+            "name": "turn",
+            "img": "turn.png",
+            "weight": 1,
+            "connections": [
+                1,
+                1,
+                0,
+                0
+            ]
+        },
+        {
+            "name": "viad",
+            "img": "viad.png",
+            "weight": 0.1,
+            "connections": [
+                0,
+                1,
+                0,
+                1
+            ]
+        },
+        {
+            "name": "vias",
+            "img": "vias.png",
+            "weight": 0.3,
+            "connections": [
+                1,
+                0,
+                0,
+                0
+            ]
+        },
+        {
+            "name": "wire",
+            "img": "wire.png",
+            "weight": 0.5,
+            "connections": [
+                0,
+                2,
+                0,
+                2
+            ]
+        }
+    ]
+}

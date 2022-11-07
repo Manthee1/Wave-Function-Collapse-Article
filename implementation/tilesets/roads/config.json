@@ -1,56 +1,59 @@
-[
-    {
-        "img": "cross.png",
-        "connections": [
-            1,
-            1,
-            1,
-            1
-        ]
-    },
-    {
-        "img": "empty.png",
-        "connections": [
-            0,
-            0,
-            0,
-            0
-        ]
-    },
-    {
-        "img": "path.png",
-        "connections": [
-            0,
-            1,
-            0,
-            1
-        ]
-    },
-    {
-        "img": "end.png",
-        "connections": [
-            0,
-            0,
-            1,
-            0
-        ]
-    },
-    {
-        "img": "corner.png",
-        "connections": [
-            1,
-            0,
-            0,
-            1
-        ]
-    },
-    {
-        "img": "three.png",
-        "connections": [
-            1,
-            1,
-            0,
-            1
-        ]
-    }
-]
+{
+    "options": {},
+    "tiles": [
+        {
+            "img": "empty.png",
+            "connections": [
+                0,
+                0,
+                0,
+                0
+            ]
+        },
+        {
+            "img": "cross.png",
+            "connections": [
+                1,
+                1,
+                1,
+                1
+            ]
+        },
+        {
+            "img": "path.png",
+            "connections": [
+                0,
+                1,
+                0,
+                1
+            ]
+        },
+        {
+            "img": "end.png",
+            "connections": [
+                0,
+                0,
+                1,
+                0
+            ]
+        },
+        {
+            "img": "corner.png",
+            "connections": [
+                1,
+                0,
+                0,
+                1
+            ]
+        },
+        {
+            "img": "three.png",
+            "connections": [
+                1,
+                1,
+                0,
+                1
+            ]
+        }
+    ]
+}
