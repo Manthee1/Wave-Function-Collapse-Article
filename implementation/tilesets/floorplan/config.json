@@ -1,146 +1,213 @@
-[
-    {
-        "img": "div.png",
-        "connections": [
-            0,
-            1,
-            0,
-            1
-        ]
-    },
-    {
-        "img": "divt.png",
-        "connections": [
-            0,
-            1,
-            1,
-            1
-        ]
-    },
-    {
-        "img": "divturn.png",
-        "connections": [
-            1,
-            1,
-            0,
-            0
-        ]
-    },
-    {
-        "img": "door.png",
-        "connections": [
-            0,
-            1,
-            0,
-            1
-        ]
-    },
-    {
-        "img": "empty.png",
-        "connections": [
-            9,
-            9,
-            9,
-            9
-        ]
-    },
-    {
-        "img": "floor.png",
-        "connections": [
-            0,
-            0,
-            0,
-            0
-        ]
-    },
-    {
-        "img": "glass.png",
-        "connections": [
-            0,
-            2,
-            9,
-            2
-        ]
-    },
-    {
-        "img": "halfglass.png",
-        "connections": [
-            0,
-            2,
-            9,
-            4
-        ]
-    },
-    {
-        "img": "in.png",
-        "connections": [
-            0,
-            0,
-            4,
-            5
-        ]
-    },
-    {
-        "img": "out.png",
-        "connections": [
-            4,
-            5,
-            9,
-            9
-        ]
-    },
-    {
-        "img": "table.png",
-        "connections": [
-            0,
-            0,
-            0,
-            0
-        ]
-    },
-    {
-        "img": "vent.png",
-        "connections": [
-            0,
-            0,
-            0,
-            0
-        ]
-    },
-    {
-        "img": "w.png",
-        "connections": [
-            0,
-            4,
-            9,
-            4
-        ]
-    },
-    {
-        "img": "wall.png",
-        "connections": [
-            0,
-            4,
-            9,
-            5
-        ]
-    },
-    {
-        "img": "walldiv.png",
-        "connections": [
-            1,
-            4,
-            9,
-            5
-        ]
-    },
-    {
-        "img": "window.png",
-        "connections": [
-            0,
-            4,
-            9,
-            5
-        ]
-    }
-]
+{
+    "options": {},
+    "tiles": [
+        {
+            "img": "div.png",
+            "connections": [
+                0,
+                1,
+                0,
+                1
+            ]
+        },
+        {
+            "img": "divt.png",
+            "connections": [
+                0,
+                1,
+                1,
+                1
+            ]
+        },
+        {
+            "img": "divturn.png",
+            "connections": [
+                1,
+                1,
+                0,
+                0
+            ]
+        },
+        {
+            "img": "door.png",
+            "connections": [
+                0,
+                1,
+                0,
+                1
+            ]
+        },
+        {
+            "img": "empty.png",
+            "connections": [
+                9,
+                9,
+                9,
+                9
+            ]
+        },
+        {
+            "img": "floor.png",
+            "connections": [
+                0,
+                0,
+                0,
+                0
+            ]
+        },
+        {
+            "img": "glass.png",
+            "connections": [
+                0,
+                [
+                    0,
+                    2,
+                    9
+                ],
+                9,
+                [
+                    9,
+                    2,
+                    0
+                ]
+            ]
+        },
+        {
+            "img": "halfglass.png",
+            "connections": [
+                0,
+                [
+                    0,
+                    2,
+                    9
+                ],
+                9,
+                [
+                    9,
+                    4,
+                    0
+                ]
+            ]
+        },
+        {
+            "img": "in.png",
+            "connections": [
+                0,
+                0,
+                [
+                    0,
+                    4,
+                    9
+                ],
+                [
+                    9,
+                    4,
+                    0
+                ]
+            ]
+        },
+        {
+            "img": "out.png",
+            "connections": [
+                [
+                    9,
+                    4,
+                    0
+                ],
+                [
+                    0,
+                    9,
+                    4
+                ],
+                9,
+                9
+            ]
+        },
+        {
+            "img": "table.png",
+            "connections": [
+                0,
+                0,
+                0,
+                0
+            ]
+        },
+        {
+            "img": "vent.png",
+            "connections": [
+                0,
+                0,
+                0,
+                0
+            ]
+        },
+        {
+            "img": "w.png",
+            "connections": [
+                0,
+                [
+                    0,
+                    4,
+                    9
+                ],
+                9,
+                [
+                    9,
+                    4,
+                    0
+                ]
+            ]
+        },
+        {
+            "img": "wall.png",
+            "connections": [
+                0,
+                [
+                    0,
+                    4,
+                    9
+                ],
+                9,
+                [
+                    9,
+                    4,
+                    0
+                ]
+            ]
+        },
+        {
+            "img": "walldiv.png",
+            "connections": [
+                1,
+                [
+                    0,
+                    4,
+                    9
+                ],
+                9,
+                [
+                    9,
+                    4,
+                    0
+                ]
+            ]
+        },
+        {
+            "img": "window.png",
+            "connections": [
+                0,
+                [
+                    0,
+                    4,
+                    9
+                ],
+                9,
+                [
+                    9,
+                    4,
+                    0
+                ]
+            ]
+        }
+    ]
+}

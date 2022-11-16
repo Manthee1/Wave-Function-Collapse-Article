@@ -3,7 +3,7 @@
         "mapSize": {
             "label": "Map size",
             "type": "number",
-            "default": 40
+            "default": 20
         },
         "canvasSize": {
             "label": "Canvas size",
@@ -27,7 +27,7 @@
                     "value": "floorplan"
                 }
             ],
-            "default": "roads"
+            "default": "floorplan"
         },
         "drawConfig": {
             "label": "Draw cell states",
@@ -57,10 +57,28 @@
             "type": "number",
             "default": 20
         },
-        "lazyRuleChecking": {
-            "label": "Lazy rule checking",
-            "type": "checkbox",
-            "default": false
+        "cellUpdating": {
+            "label": "Cell updating",
+            "type": "radio",
+            "options": [
+                {
+                    "label": "Crazy (very slow)",
+                    "value": "all"
+                },
+                {
+                    "label": "Smart (fast)",
+                    "value": "smart"
+                },
+                {
+                    "label": "Lazy (faster)",
+                    "value": "lazy"
+                },
+                {
+                    "label": "Very Lazy (light-speed)",
+                    "value": "very-lazy"
+                }
+            ],
+            "default": "smart"
         },
         "useSeed": {
             "label": "Use seed",

@@ -29,13 +29,6 @@ function createForm(optionsConfig) {
             //Checkbox
             if (optionsConfig[option].type === "checkbox")
                 options[option] = options[option] === "on";
-
-            //Radio
-            if (optionsConfig[option].type === "radio") {
-                console.log(options[option]);
-
-
-            }
             //Number
             if (optionsConfig[option].type === "number")
                 options[option] = Number(options[option]);
@@ -73,7 +66,6 @@ function createForm(optionsConfig) {
             case "select":
                 inputEl = document.createElement("select");
                 inputEl.id = key;
-                inputEl.value = value.default;
                 inputEl.name = key;
                 for (let option of value.options) {
                     const optionElement = document.createElement("option");
@@ -81,6 +73,7 @@ function createForm(optionsConfig) {
                     optionElement.innerText = option.label;
                     inputEl.appendChild(optionElement);
                 }
+                inputEl.value = value.default;
                 break;
             case "number":
                 inputEl = document.createElement("input");

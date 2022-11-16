@@ -1,9 +1,8 @@
 import "./lib/p5.min.js"
 
-
 //Globals
 let options = {}
-let inferredTilesConfig, tilesConfig, tilesOptions;
+let inferredTilesConfig, tilesConfig, tilesOptions = {};
 let p5Instance;
 let canvasSize, mapSize, cellSize, width, height, leastEntropyCells, lastCollapsedCell, collapsedCells
 let preloadedImages = {};
@@ -104,9 +103,18 @@ function isRuleFollowed(stateA, stateB, direction) {
     const tileB = tilesConfig[stateB];
     let valA = tileA.connections[direction];
     let valB = tileB.connections[getOppositeDirection(direction)];
-    valB = typeof valB == "object" ? valB.value : valB
+    valB = typeof valB == "object" && !Array.isArray(valB) ? valB.value : valB
 
     if (typeof valA == "object") {
+        //If valA is an array
+        const isArrayA = Array.isArray(valA)
+        const isArrayB = Array.isArray(valB)
+        if (isArrayA == isArrayB);
+        if (isArrayA) {
+            //Check if both arrays are the same
+            // valB = valB.reverse()
+            return valA.every((v, i) => v == valB[i])
+        }
         let allowedTiles = valA.tiles;
         valA = valA.value;
         // if (tileA.name == "connection" && tileB.name == "connection")
@@ -129,15 +137,20 @@ function getNeighbors(x, y, collapsed = "all") {
 
 
 function updateChain(x, y) {
-    if (grid[y][x].collapsed) return;
     // Update get status of x,y neighbors and update x,y.
     // After that check if neighbors changed and run the same function for each changed neighbor
-
-    let neighbors = getNeighbors(x, y, false)
-    updateNeighbors(x, y)
-    for (let cell of neighbors) {
-        if (cell.state != grid[cell.y][cell.x]) updateChain(cell.x, cell.y)
+    let stack = [...getNeighbors(x, y, false)];
+    while (stack.length > 0) {
+        let cell = stack.pop();
+        if (cell.collapsed) continue;
+        //Update cell
+        const isUpdated = updateCell(cell.x, cell.y)?.updated ?? false;
+        if (isUpdated) {
+            //Add neighbors to stack
+            stack.push(...getNeighbors(cell.x, cell.y, false));
+        }
     }
+
 
 }
 
@@ -184,6 +197,9 @@ window.updateAll = function () {
     let updated = false;
     for (let y = 0; y < mapSize; y++) {
         for (let x = 0; x < mapSize; x++) {
+            //If cell is collapsed, skip it
+            if (grid[y][x].collapsed) continue;
+            // If 
             let uc = updateCell(x, y) ?? false
             if (uc.updated) updated = true;
         }
@@ -282,7 +298,7 @@ async function run(newOptions) {
     options = newOptions ?? {};
     tilesConfig = await getJSONFile(`./tilesets/${options.tileSet}/config.json`);
     inferredTilesConfig = inferAllTileConfigs(tilesConfig);
-    tilesOptions = Object.assign(tilesOptionsDefaults, tilesConfig.options)
+    Object.assign(tilesOptions, tilesOptionsDefaults, tilesConfig.options)
     tilesConfig = Object.values(inferredTilesConfig);
     console.log(tilesConfig);
     preloadedImages = {};
@@ -355,9 +371,6 @@ async function run(newOptions) {
     let runsTillRedraw = redrawEvery;
     p5Instance.noUpdates = options.drawConfig == "finished" ?? false;
     p5Instance.redraw();
-    await sleep(100);
-    p5Instance.redraw();
-    await sleep(100);
 
     let updateCanvas = options.drawConfig == "finished" ? () => { } : async () => {
         runsTillRedraw--
@@ -366,6 +379,31 @@ async function run(newOptions) {
         runsTillRedraw = redrawEvery;
         await sleep(0);
     }
+    let updateCells;
+    switch (options.cellUpdating) {
+        case "all":
+            updateCells = (lastX, lastY) => { while (updateAll()); }
+            break;
+        case "smart":
+            updateCells = (lastX, lastY) => updateChain(lastX, lastY);
+
+            break;
+        case "lazy":
+            updateCells = (lastX, lastY) => {
+                //Update a 5x5 area around the last collapsed cell
+                for (let y = lastY - 2; y <= lastY + 2; y++)
+                    for (let x = lastX - 2; x <= lastX + 2; x++)
+                        updateCell(x, y);
+            }
+            break;
+        case "very-lazy":
+            updateCells = (lastX, lastY) => updateNeighbors(lastX, lastY);
+            break;
+
+        default:
+            updateCells = (lastX, lastY) => updateChain(lastX, lastY);
+            break;
+    }
 
     while (!isAllCollapsed()) {
         if (!p5Instance._loop) { await sleep(50); continue }
@@ -373,11 +411,7 @@ async function run(newOptions) {
         //Update neighbours
         let lastX = lastCollapsedCell[0];
         let lastY = lastCollapsedCell[1];
-        // updateChain(lastX, lastY);
-        updateNeighbors(lastX, lastY);
-        // run updateAll until no more changes
-        // updateChain(lastX, lastY)
-        if (!options.lazyRuleChecking) while (updateAll());
+        updateCells(lastX, lastY);
         //Update canvas
         await updateCanvas();
 
