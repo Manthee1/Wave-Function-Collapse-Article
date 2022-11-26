@@ -90,21 +90,6 @@ Otherwise, we repeat the loop.
     \caption{Model Loop Diagram}\label{fig:model_loop_diagram}
 \end{figure}
 
-\subsection{Modifications}\label{sec:modifications}
-% Modifications to the algorithm.
-The algorithm is very simple and straightforward, but it can be modified to fit different needs.
-For a more controlled distribution of tile types we can assign a weight value to each type.
-The weight value will be used to determine the likelihood of a tile being collapsed into a certain pattern.
-
-We can also expand WFC with generic search, giving it the ability to generate levels targeting specific play experiences.
-This is the topic of a paper released by Raphael Bailly and Guillaume Levieux\cite{BL22}.
-
-There is also a way to augment the algorithm with the Growing Grid neural network for procedural map generation~\cite{NMBP20}
-
-We can take control to another level and introduce more constraints to the algorithm making the output seem more Human-Designed.
-As detailed in the paper by Darui Cheng, Honglei Han, and Guangzheng Fei\cite{CHF20}.
-
-And Of course there are many more ways to modify the algorithm for different purposes.
 
 \section{Results}\label{sec:results}
 % subsections: examples, performance, conclusions.
@@ -130,6 +115,22 @@ This is due to the fact that the algorithm is greedy and it tends to collapse th
 
 Optimizations can be made to the algorithm, and the rule system can be expanded to support more complex rules.
 There is a lot of room for improvement, but for now, it is a good start.
+
+\section{Modifications}\label{sec:modifications}
+% Modifications to the algorithm.
+The algorithm is very simple and straightforward, but it can be modified to fit different needs.
+For a more controlled distribution of tile types we can assign a weight value to each type.
+The weight value will be used to determine the likelihood of a tile being collapsed into a certain pattern.
+
+We can also expand WFC with generic search, giving it the ability to generate levels targeting specific play experiences.
+This is the topic of a paper released by Raphael Bailly and Guillaume Levieux\cite{BL22}.
+
+There is also a way to augment the algorithm with the Growing Grid neural network for procedural map generation~\cite{NMBP20}
+
+We can take control to another level and introduce more constraints to the algorithm making the output seem more Human-Designed.
+As detailed in the paper by Darui Cheng, Honglei Han, and Guangzheng Fei\cite{CHF20}.
+
+And Of course there are many more ways to modify the algorithm for different purposes.
 
 \section{Comparison with other methods}\label{sec:comparison}
 % subsections: other methods, pros and cons.
