@@ -302,8 +302,9 @@ async function run(newOptions) {
     tilesConfig = Object.values(inferredTilesConfig);
     console.log(tilesConfig);
     preloadedImages = {};
-    canvasSize = options.canvasSize
     mapSize = options.mapSize;
+    const tileSize = 32;
+    canvasSize = mapSize * tileSize;
     cellSize = canvasSize / mapSize;
     [width, height] = [canvasSize, canvasSize]
 
@@ -408,7 +409,7 @@ async function run(newOptions) {
     while (!isAllCollapsed()) {
         if (!p5Instance._loop) { await sleep(50); continue }
         collapseCell(getLeastEntropyCell());
-        //Update neighbours
+        //Update neighbors
         let lastX = lastCollapsedCell[0];
         let lastY = lastCollapsedCell[1];
         updateCells(lastX, lastY);
@@ -468,6 +469,11 @@ const createP5Instance = function (options) {
             }
             s.setup = function () {
                 s.createCanvas(canvasSize, canvasSize);
+                const canvas = s.canvas;
+                let margin = 300;
+                window.addEventListener("resize", (e) => {
+                    canvas.style.scale = Math.min(window.innerWidth / (canvas.width + margin), window.innerHeight / (canvas.height + margin));
+                });
                 //Increase fps
                 s.frameRate(120);
             }
@@ -476,6 +482,10 @@ const createP5Instance = function (options) {
                 //Reset
                 s.noStroke();
                 s.background(255);
+
+                const canvas = s.canvas;
+                let margin = 300;
+                canvas.style.scale = Math.min(window.innerWidth / (canvas.width + margin), window.innerHeight / (canvas.height + margin));
 
                 if (s.noUpdates) {
                     p5Instance.textAlign(p5Instance.CENTER, p5Instance.CENTER);

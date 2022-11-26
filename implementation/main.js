@@ -37,7 +37,7 @@ function createForm(optionsConfig) {
         }
 
         form.style.opacity = 0;
-        form.style.scale = 0.5;
+        form.style.scale = 1.5;
 
         await sleep(500)
 
@@ -55,6 +55,19 @@ function createForm(optionsConfig) {
 
 
     }
+
+    //Form title
+    const title = document.createElement("h2");
+    title.innerText = "Options";
+    title.className = "title";
+    form.appendChild(title);
+
+    //Create form input container
+    const formContainer = document.createElement("div");
+    formContainer.id = "form-container";
+    form.appendChild(formContainer);
+
+
     for (let [key, value] of Object.entries(optionsConfig)) {
         let inputEl;
         const container = document.createElement("div");
@@ -116,13 +129,19 @@ function createForm(optionsConfig) {
         }
         container.appendChild(label);
         container.appendChild(inputEl);
-        form.appendChild(container);
+        formContainer.appendChild(container);
     }
+
+    //Button container
+    const buttonContainer = document.createElement("div");
+    buttonContainer.className = "submit-button-container";
+    form.appendChild(buttonContainer);
+
     //Create submit button
     const submitButton = document.createElement("button");
-    submitButton.innerText = "Submit";
+    submitButton.innerText = "Run Algorithm";
     submitButton.type = "submit";
-    form.appendChild(submitButton);
+    buttonContainer.appendChild(submitButton);
     //Append to body
     document.body.appendChild(form);
 }
