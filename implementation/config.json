@@ -84,6 +84,11 @@
             "label": "Seed",
             "type": "number",
             "default": 20
+        },
+        "startPaused": {
+            "label": "Start Paused",
+            "type": "checkbox",
+            "default": false
         }
     }
 }

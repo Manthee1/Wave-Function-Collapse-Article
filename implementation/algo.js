@@ -354,6 +354,11 @@ async function run(newOptions) {
             pauseButton.innerText = "⏸";
         }
     }
+    if (options.startPaused) {
+        p5Instance.noLoop();
+        pauseButton.innerText = "▶️";
+    }
+
     const stopButton = document.createElement("button");
     stopButton.innerText = "⏹";
     stopButton.onclick = () => {
