@@ -28,7 +28,7 @@ main {
     display: flex;
     justify-content: center;
     align-content: center;
-    z-index: 0;
+    z-index: -1;
 }
 
 .buttons-container {
