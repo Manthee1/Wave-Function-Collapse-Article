@@ -55,7 +55,7 @@ Then the algorithm will assign each tile a superposition of all possible pattern
 After prepending the superpositions, the algorithm will assign one random pattern to a tile with the least superpositions, also known as the least entropy, effectively collapsing its wave function, which is also why it is called a collapse algorithm.
 Then we reevaluate all the affected tiles and their possible patterns and remove the ones that don't fit the rules.
 Then we repeat the process until there is no more entropy in the tilemap.
-This all is explained in more detail in Boris's article~\cite{WFCE}.
+This all is explained in more detail in Boris's blog Wave Function Collapse Explained~\cite{WFCE}.
 
 \section{Extensions}\label{sec:extensions}
 Other then the most basic implementation of the algorithm, we also have extensions to the algorithm that allow us to generate more complex content.
@@ -152,38 +152,36 @@ Some of them are more suited for more specific tasks, while others are more gene
 Some are faster, while others are slower. Some are more complex, while others are simpler.
 Comparing them is a difficult task, since they have wildly different approaches and goals.
 But we can still compare WFC to some of the more related methods.
-Some examples of these algorithms include:
-\begin{itemize}
-    \item Model synthesis, which uses a set of rules and constraints to generate 3D models
-    \item Perlin noise, which uses random noise functions to generate smooth, natural patterns or textures that can be used as input for other PCG algorithms
-    \item Markov chain algorithms, which use statistical models to generate sequences of symbols or events based on the probabilities of their occurrences in the input data
-    \item Genetic algorithms, which use principles of natural evolution to generate new solutions or configurations by combining and mutating existing ones
-    \item L-systems, which use a set of rules and symbols to generate complex structures or patterns based on repeated applications of the rules
-\end{itemize}
-Each of these algorithms has its own unique characteristics and capabilities, and can be used in a variety of applications, including game content generation.
+Some examples of these algorithms include: Model synthesis, Perlin noise, Markov chain algorithms, Genetic algorithms, L-systems.
 
-Let's talk a bit about Model Synthesis, which is a constraint-based algorithm mainly used for generating 3D models.
+There are a lot of similarities between WFC ant these algorithms, but the main differences are the types of mathematical models used to generate the output.
+Even tho each algorithm can be configured to generate different types of content, they are all very different in how they work.
+
+As we already know, WFC uses a random process known as the ``collapse'' of a wave function to determine which input patterns are selected and combined to create the output, and its commonly used for generating 2D tilemaps for games, but can also be applied to other types of content.
+
+Model Synthesis is a constraint-based algorithm mainly used for generating 3D models.
 Paul Merrell, the creator of model synthesis has compared the two algorithms in his paper\cite{Mer21}.
 \begin{quote}
     \textit{Model synthesis and WFC use nearly the same algorithm and produce similar results. WFC picks cells in a different
 order and does not modify in blocks. This causes the algorithm to fail more on some large models.}
 \end{quote}
 
-When it comes to comparing WFC and Perlin noise, the main difference is that WFC uses a random process known as the ``collapse'' of a wave function to determine which input patterns are selected and combined to create the output, while Perlin noise uses a random noise function to generate smooth, natural-looking patterns or textures.
+Perlin noise uses a random noise function to generate smooth, natural-looking patterns or textures\cite{PerNoise}.
 
-There are a lot of similarity with the other algorithms, but the main differences are the types of mathematical models used to generate the output.
-Even tho each algorithm can be configured to generate different types of content, they are all very different in how they work.
-WFC is commonly used for generating 2D tilemaps for games, but can also be applied to other types of content.
-Markov chain algorithms can be used to generate a wide range of outputs, including text, music, and images.
-Genetic algorithms are commonly used to solve optimization problems, and can be applied to a wide range of domains, including game content generation.
-And L-systems are commonly used to model the growth of plants and other natural systems, and can be applied to generate 2D and 3D graphics, as well as other types of content.
+Markov chain algorithms use statistical models to generate sequences of symbols or events based on the probabilities of their occurrences in the input data.
+They can be used to generate a wide range of outputs, including text, music, and images\cite{MCHAIN}.
+
+Genetic algorithms are commonly used to solve optimization problems, and can be applied to a wide range of domains, including game content generation\cite{GeneticAA}.
+
+And L-systems are commonly used to model the growth of plants and other natural systems, and can be applied to generate 2D and 3D graphics, as well as other types of content\cite{LSys}.
+
+Each of these algorithms have their own unique characteristics and capabilities, and can be used in a variety of applications.
 
 \section{Conclusion}\label{sec:conclusion}
 In this thesis, we had a brief introduction to PCG algorithms.
-We then went over the Wave Function Collapse algorithm, and its implementation.
 We explained in detail how the algorithm works, a way to implemented it, and how it can be modified.
 We also showed some examples of the algorithm in action, and compared it to some other PCG algorithms.
-WFC is a very simple algorithm, but it's very powerful and can be used to generate a wide variety of content.
+In conclusion, WFC is a very theoretically simple algorithm, but it's very powerful and can be used to generate a wide variety of content.
 It also has a very simple implementation, and can be easily modified to fit different needs.
 It's a great algorithm to start with when learning about PCG\@.
 
