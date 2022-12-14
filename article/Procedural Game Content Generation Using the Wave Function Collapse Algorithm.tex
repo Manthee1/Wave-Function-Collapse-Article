@@ -6,6 +6,7 @@
 \usepackage{hyperref} 
 
 \usepackage{cite}
+\usepackage{multirow}
 
 \pagestyle{headings}
 \title{Procedural Game Content Generation Using the Wave Function Collapse Algorithm\thanks{Semester project in the subject Methods of engineering work, year 2022/23, management: Ing. Igor Stupavský }}
@@ -130,7 +131,28 @@ This limitation is a result of the algorithm's inadequate design, which fails to
 Consequently, the algorithm's performance may be compromised, leading to incorrect or unreliable results.
 To address these issues, we can optimize the algorithm and augment the rule system to support a broader range of rules.
 Possible improvements to the algorithm are discussed in the next section [\ref*{sec:modifications}].
+\newline
+% Table of the succes rate depending on the size of the grid and the complexity of the rules.
+\begin{table}[ht]
+    \centering
+    \begin{tabular}{|c|cc|}
+        \hline
+        \multirow{2}{*}{Grid}   & \multicolumn{2}{c|}{Rules} \\ \cline{2-3} 
+                                & \multicolumn{1}{c|}{Simple} 
+                                & \multicolumn{1}{c|}{Complex} \\ \hline
+        \multicolumn{1}{|l|}{10$\times$10} & \multicolumn{1}{l|}{100\%}  & 90\% \\ \hline
+        \multicolumn{1}{|l|}{25$\times$25} & \multicolumn{1}{l|}{100\%}  & 78\% \\ \hline
+        \multicolumn{1}{|l|}{50$\times$50} & \multicolumn{1}{l|}{100\%}  & 28\% \\ \hline
+        \multicolumn{1}{|l|}{75$\times$75} & \multicolumn{1}{l|}{100\%}  & 17\% \\ \hline
+        \multicolumn{1}{|l|}{100$\times$100} & \multicolumn{1}{l|}{100\%}  & 5\% \\ \hline
+        
+    \end{tabular}
+    \caption{Success Rate}\label{tab:success_rate}
+\end{table}     
 
+As we can see in Table~\ref{tab:success_rate}, the algorithm's performance is highly dependent on the size of the grid and the complexity of the rules.
+
+\newpage
 \section{Modifications}\label{sec:modifications}
 % Modifications to the algorithm.
 The algorithm is characterized by its simplicity and transparency, but it can be adapted to accommodate diverse requirements.
@@ -189,7 +211,7 @@ In conclusion, WFC is a very theoretically simple algorithm, but it's very power
 It also has a very simple implementation, and can be easily modified to fit different needs.
 The main limitations of basic WFC is that it is computationally intensive and unfit for real-time applications. 
 However, it's a great algorithm to start with when learning about PCG\@.
-
+\newpage
 \bibliography{lit}
 \bibliographystyle{alpha}
 
