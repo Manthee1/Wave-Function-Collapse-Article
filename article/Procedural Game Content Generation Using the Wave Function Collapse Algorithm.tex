@@ -25,7 +25,10 @@
 
 \begin{abstract}
     \begin{center}
-        This thesis deals with the problem of generating game content using the Wave Function Collapse algorithm. The algorithm is described in detail and its application to the generation of game content is demonstrated. The thesis also contains a comparison of the algorithm with other methods of generating game content.
+        This thesis examines the problem of generating game content using the Wave Function Collapse (WFC) algorithm.
+        The algorithm is thoroughly described and its effectiveness in generating game content is demonstrated.
+        Additionally, the thesis includes a comparison of the WFC algorithm with other methods of generating game content.
+        Through this analysis, the potential of the WFC algorithm as a tool for game content generation is explored.
     \end{center}
 \end{abstract}
 
@@ -37,75 +40,75 @@ Its main use case is generating assets or content that would be too time-consumi
 PCG is mainly connotatively tied to game content generation, but its use cases can be more creative.
 Most PCG systems use game-specific assets with game-specific rules and algorithms to generate their content.
 A more general application fit for a wide range of games is the Wave Function Collapse algorithm developed by Maxim Gumin~\cite{WFC}.
-Wave Function Collapse is a greedy PCG algorithm based on the concept of collapsing a wave function, which is a mathematical representation of a quantum state.
-This method can generate a large, high-quality, consistent output from a small set of input patterns.
-It can be used in various applications, although its most commonly used for generating 2D tilemaps for games.
-It can also generate 3D models, music, poetry, and more.
+The Wave Function Collapse (WFC) algorithm is a greedy PCG method that is based on the concept of collapsing a wave function, a mathematical representation of a quantum state.
+This method can generate a controlled, consistent and high-quality output from a small set of input patterns.
+It has a variety of potential applications, but is most commonly used for generating 2D tile-maps for games.
+However, it can also be used to generate 3D models, music, poetry, and more.
 WFC's output can only be as good as its input, so it's essential to have a good set of input patterns and rules. 
-My goal in this thesis is to create a simple, configurable application that will use the WFC algorithm to generate tilemaps for games, given a user-defined set of input patterns and rules.
-
+\newpage
 \section{Theory}\label{sec:theory}
 % Theoretical background of the wave function collapse algorithm.
-As mentioned in the introduction [\ref*{sec:introduction}], the Wave Function Collapse algorithm is a greedy PCG algorithm based on the concept of collapsing a wave function, which is a mathematical representation of a quantum state.
-A function starts in a superposition of values and collapses when that function is measured.
-The result of the measurement is the value of the function at that point.
-We can apply that concept for the generation of 2D tilemaps.
-First, we need to define a set of input patterns and their rules regarding each other.
-Then the algorithm will assign each tile a superposition of all possible patterns.
-After prepending the superpositions, the algorithm will assign one random pattern to a tile with the least superpositions, also known as the least entropy, effectively collapsing its wave function, which is also why it is called a collapse algorithm.
-Then we reevaluate all the affected tiles and their possible patterns and remove the ones that don't fit the rules.
-Then we repeat the process until there is no more entropy in the tilemap.
-This all is explained in more detail in Boris's blog Wave Function Collapse Explained~\cite{WFCE}.
+As mentioned in the introduction [\ref*{sec:introduction}], the Wave Function Collapse algorithm is based on the concept of collapsing a wave function.
+In the context of quantum mechanics, a wave function is a mathematical representation of the quantum state of a system.
+It is a function that assigns a complex number to each point in space, representing the amplitude of the wave at that point.
+When a wave function is measured, it collapses, meaning that the complex number associated with each point in space is replaced with a single real number, representing the value of the wave function at that point in time.
+
+This concept of wave function collapse is exactly how the WFC algorithm works.
+First, we define a set of input patterns and their associated rules.
+Next, the algorithm assigns each tile a superposition of all possible patterns.
+Then, the algorithm selects the tile with the least superpositions, also known as the least entropy, assigns it a random pattern from its superposition, and collapses its wave function.
+This process is repeated, with the algorithm reevaluating the affected tiles and removing any patterns that do not fit the rules at each step.
+The algorithm continues until there is no remaining entropy in the tile-map.
+Boris explains WFC in more detail in his Wave Function Collapse Explained blog.~\cite{WFCE}.
 
 \section{Extensions}\label{sec:extensions}
-Other then the most basic implementation of the algorithm, we also have extensions to the algorithm that allow us to generate more complex content.
-For example, we can have a different shaped grid, different constraints and ways of looking at those constraints.
+Other than the most basic implementation of the algorithm, we also have extensions to the algorithm that allow us to generate more complex content.
+For example, we can have a differently shaped grid, different constraints, and ways of looking at those constraints.
 
 \subsection{The Overlap Model}
 The most notable extension is the Overlap Model, which is mainly used to generate 2D textures.
-Here we input a image which will act as our input pattern.
-And, when it comes to rules, instead of concerning ourselves with the adjacency of tiles, we compare a 3$\times$3 group of tiles of our output to a 3$\times$3 group of our input pattern.
-This produce a variation of the input pattern.
-However, no matter how intuitive it is, it also is harder to implement, slower, and less flexible than the tiling model.
-This extension is also not used in this implementation.
+Instead of concerning ourselves with adjacency rules for tiles, here we input an image that will act as bout our input pattern and our constraints.
+In the overlap model of WFC, the input is divided into overlapping segments (usually a 3$\times$3 pixel group), and the algorithm calculates the likelihood of each possible configuration of the segments.
+This allows the algorithm to consider multiple possible configurations for a given input, which can improve the coherence and randomness of the generated patterns.
+The overlap model produces a variation of the input pattern.
+It is very intuitive to use. However it is also harder to implement, slower, and less flexible than the tiling model.
+This extension is not used in this implementation, but it is still worth mentioning.
 
 \subsection{Semi-Automatic Rule System}\label{sec:semi-automatic_rule_system}
-Rather than detailing every relation to every possible rotation of every tile. We use an array of four numbers representing a connection type for each side of the tile. \texttt{[top, right, bottom, left]}.
+Rather of defining every relation to every possible rotation of every tile.
+We can use an array of four numbers representing a connection type for each side of the tile. \texttt{[top, right, bottom, left]}.
 Only the same connection types are allowed to connect to each other.
-The system than automatically generates all the possible rotations of the tile and their connections.
-We can also define which tile can connect to which other tile. Making sure that for even if the connection types match, we can still prevent the tiles from connecting to each other if needed.
-
+The system then automatically generates all the possible rotations of the tile and their connections.
+We can also define which tile can connect to which other tile. Making sure that, even if the connection types match, we can still prevent the tiles from connecting to each other if needed.
 \begin{figure}[ht]
     \centering
     \includegraphics[width=0.8\textwidth]{figures/tile_rotation_example.png}
     \caption{Tile Rotation}\label{fig:tile_rotation_example}
 \end{figure}
 
-
 \section{Algorithm Implementation}\label{sec:implementation}
-The model we are using is the tiling model, because it can be manually configured with more complex constraints making it more suitable for game content generation.
-With it we also use a custom semi-automatic rule system extension, which was mentioned in the previous section [\ref*{sec:semi-automatic_rule_system}].
+In this implementation of the WFC algorithm, we use the basic tiling model. Primarily because it can be manually configured with more complex constraints, making it more suitable for game content generation.
+We also use the semi-automatic rule system extension mentioned in the previous section [\ref*{sec:semi-automatic_rule_system}].
 
 The central part of the project is the algorithm itself.
 It uses the helper, interface, and infrastructure functions to work with the tile grid.
 It starts by inferring all the rules with the semi-automatic rule system[\ref*{sec:semi-automatic_rule_system}].
-Then it initialize the tile grid and fill each tile's state array with all possible states.
-And the the main loop of the algorithm starts.
+Then it initializes the tile grid and fills each tile's state array with all possible states.
+Then the main loop of the algorithm starts.
 In the loop, we get the tile with the least entropy, collapse it, and reevaluate all the affected cells.
-Evaluating the cells is done by updating the states of each neighbor of the collapsed cell, then reevaluating the states of their neighbors, and so on, until we reach a point where cell states don't change any more.
-Finally, we check if all of the cells are collapsed, and if they are, the algorithm halts.
+We evaluate the cells by updating each collapsed cell's neighbors and reevaluating their neighbors until no further changes occur.
+Finally, we check if all of the cells have collapsed. If they have, the algorithm halts.
 Otherwise, we repeat the loop.
-
+\newline
 \begin{figure}[ht]
     \centering
-    \includegraphics[width=0.6\textwidth]{figures/model_loop_diagram.png}
+    \includegraphics[width=0.5\textwidth]{figures/model_loop_diagram.png}
     \caption{Model Loop Diagram}\label{fig:model_loop_diagram}
 \end{figure}
 
-
 \section{Results}\label{sec:results}
 % subsections: examples, performance, conclusions.
-With the algorithm implemented, we can now generate tilemaps.
+With the algorithm implemented, we can now generate tile-maps.
 Starting off with a simple example (Figure~\ref{fig:example1}).
 \begin{figure}[ht]
     \centering
@@ -113,51 +116,52 @@ Starting off with a simple example (Figure~\ref{fig:example1}).
     \caption{Road Tiles}\label{fig:example1}
 \end{figure}
 
-Defining the rules for these tiles, we can generate a 10 by 10 tilemap with the following result (Figure~\ref{fig:example1map}):
-The generation shouldn't take more than a second.
+Defining the rules for these tiles, we can generate a 10 by 10 tile-map with the following result (Figure~\ref{fig:example1map}):
 
 \begin{figure}[ht]
     \centering
-    \includegraphics[width=0.5\textwidth]{figures/roads_output.png}
+    \includegraphics[width=0.35\textwidth]{figures/roads_output.png}
     \caption{Road Output}\label{fig:example1map}
 \end{figure}
 
-Altho the algorithms is very simple, it tends to break when the rule-set is more complex, and when the grid size is bigger.
-This is due to the fact that the algorithm is greedy and it tends to collapse the most common patterns first, which can lead to a lot of dead-ends.
-
-Optimizations can be made to the algorithm, and the rule system can be expanded to support more complex rules.
-There is a lot of room for improvement, but for now, it is a good start.
+It works great with simple rules and small tile-maps. 
+However, the simplicity of the algorithm makes it prone to failure when confronted with complex rule sets or large grid sizes.
+This limitation is a result of the algorithm's inadequate design, which fails to adequately address the challenges posed by these conditions.
+Consequently, the algorithm's performance may be compromised, leading to incorrect or unreliable results.
+To address these issues, we can optimize the algorithm and augment the rule system to support a broader range of rules.
+Possible improvements to the algorithm are discussed in the next section [\ref*{sec:modifications}].
 
 \section{Modifications}\label{sec:modifications}
 % Modifications to the algorithm.
-The algorithm is very simple and straightforward, but it can be modified to fit different needs.
-For a more controlled distribution of tile types we can assign a weight value to each type.
-The weight value will be used to determine the likelihood of a tile being collapsed into a certain pattern.
+The algorithm is characterized by its simplicity and transparency, but it can be adapted to accommodate diverse requirements.
+For instance, to achieve a more controlled distribution of tile types, we can assign a weight value to each type.
+This weight value can be used to determine the probability that a tile will be collapsed into a specific pattern.
+By modifying the algorithm in this way, we can effectively control the distribution of tile types and improve the performance of the algorithm.
 
-We can also expand WFC with generic search, giving it the ability to generate levels targeting specific play experiences.
-This is the topic of a paper released by Raphael Bailly and Guillaume Levieux\cite{BL22}.
+WFC can also be enhanced with genetic search, enabling it to generate levels with specific play experiences.
+For example, Bailly and Levieux's paper describes a genetic search-based approach to level generation using WFC~\cite{BL22}.
 
-There is also a way to augment the algorithm with the Growing Grid neural network for procedural map generation~\cite{NMBP20}
+There is also a way to augment the algorithm with the Growing Grid neural network for procedural map generation~\cite{NMBP20}.
 
-We can take control to another level and introduce more constraints to the algorithm making the output seem more Human-Designed.
-As detailed in the paper by Darui Cheng, Honglei Han, and Guangzheng Fei\cite{CHF20}.
+We can further control the algorithm by introducing additional constraints, resulting in outputs that appear more human-designed.
+For example, Cheng, Han, and Fei's paper describes a constraint-based approach to level generation using WFC~\cite{CHF20}.
 
-And Of course there are many more ways to modify the algorithm for different purposes.
+The wave function collapse algorithm can be modified in a number of other ways to suit different applications.
+The flexibility of the algorithm allows for a range of potential uses and modifications, making it a useful tool in a variety of contexts.
 
 \section{Comparison with other methods}\label{sec:comparison}
 % subsections: other methods, pros and cons.
 
-There are many different procedural content generation (PCG) algorithms that are similar to the Wave Function Collapse (WFC) algorithm, each with its own strengths and limitations.
-Some of them are more suited for more specific tasks, while others are more general.
-Some are faster, while others are slower. Some are more complex, while others are simpler.
-Comparing them is a difficult task, since they have wildly different approaches and goals.
-But we can still compare WFC to some of the more related methods.
-Some examples of these algorithms include: Model synthesis, Perlin noise, Markov chain algorithms, Genetic algorithms, L-systems.
+Procedural content generation (PCG) algorithms, like the Wave Function Collapse (WFC) algorithm, have varying strengths and limitations.
+Some are better suited for specific tasks, while others are more general.
+Comparing these algorithms can be difficult due to their diverse approaches and goals, but a comparison to related methods can still be made.
+Examples of such algorithms include model synthesis, Perlin noise, Markov chain algorithms, genetic algorithms, and L-systems.
 
-There are a lot of similarities between WFC ant these algorithms, but the main differences are the types of mathematical models used to generate the output.
-Even tho each algorithm can be configured to generate different types of content, they are all very different in how they work.
+There are many similarities between WFC and these PCG algorithms, but the main difference is the type of mathematical models used to generate the output.
+Although each algorithm can be configured to generate different types of content, they all operate in very different ways.
 
-As we already know, WFC uses a random process known as the ``collapse'' of a wave function to determine which input patterns are selected and combined to create the output, and its commonly used for generating 2D tilemaps for games, but can also be applied to other types of content.
+As we already know, WFC uses a random process known as the ``collapse'' of a wave function to determine which input patterns are selected and combined to create the output.
+Its most commonly used for generating 2D tile-maps for games, but can also be applied to other types of content.
 
 Model Synthesis is a constraint-based algorithm mainly used for generating 3D models.
 Paul Merrell, the creator of model synthesis has compared the two algorithms in his paper\cite{Mer21}.
@@ -183,7 +187,8 @@ We explained in detail how the algorithm works, a way to implemented it, and how
 We also showed some examples of the algorithm in action, and compared it to some other PCG algorithms.
 In conclusion, WFC is a very theoretically simple algorithm, but it's very powerful and can be used to generate a wide variety of content.
 It also has a very simple implementation, and can be easily modified to fit different needs.
-It's a great algorithm to start with when learning about PCG\@.
+The main limitations of basic WFC is that it is computationally intensive and unfit for real-time applications. 
+However, it's a great algorithm to start with when learning about PCG\@.
 
 \bibliography{lit}
 \bibliographystyle{alpha}
